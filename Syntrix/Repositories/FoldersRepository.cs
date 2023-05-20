@@ -76,7 +76,7 @@ namespace Syntrix.Repositories
 
         /*------------------Update Folder----------------------*/
 
-        public void UpdateFolder(Folders folder)
+        public void UpdateFolder(FoldersEditView folder)
         {
             using (var conn = Connection)
             {
@@ -86,11 +86,9 @@ namespace Syntrix.Repositories
                     cmd.CommandText = @"UPDATE [dbo].[Folders]
                                            SET 
                                                [Name] = @Name
-                                              ,[UserId] = @UserId
                                         WHERE Id = @id";
                     DbUtils.AddParameter(cmd, "@id", folder.Id);
                     DbUtils.AddParameter(cmd, "@Name", folder.Name);
-                    DbUtils.AddParameter(cmd, "@UserId", folder.UserId);
                     cmd.ExecuteNonQuery();
 
                 }

@@ -45,7 +45,7 @@ namespace Syntrix.Controllers
 
 
         [HttpPut("/EditFolder/{id}")]
-        public IActionResult UpdateFolder(int id, Folders folder)
+        public IActionResult UpdateFolder(int id, FoldersEditView folder)
         {
             if (id != folder.Id)
             {
