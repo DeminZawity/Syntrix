@@ -21,6 +21,7 @@ namespace Syntrix
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<IUsersRepository, UsersRepository>();
             builder.Services.AddTransient<IFoldersRepository, FoldersRepository>();
+            builder.Services.AddTransient<ITagsRepository, TagsRepository>();
 
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
                 .AddNegotiate();
