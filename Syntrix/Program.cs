@@ -25,6 +25,7 @@ namespace Syntrix
             builder.Services.AddTransient<IFilesRepository, FilesRepository>();
             builder.Services.AddTransient<IFileTagsRepository, FileTagsRepository>();
             builder.Services.AddTransient<IBookmarksRepository, BookmarksRepository>();
+            builder.Services.AddTransient<IResourcesRepository, ResourcesRepository>();
 
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
                 .AddNegotiate();

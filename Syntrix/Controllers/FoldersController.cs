@@ -57,6 +57,7 @@ namespace Syntrix.Controllers
         }
 
 
+
         [HttpDelete("DeleteFolderById/{id}")]
         public IActionResult Delete(int id)
         {
