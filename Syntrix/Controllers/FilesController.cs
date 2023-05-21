@@ -34,6 +34,30 @@ namespace Syntrix.Controllers
         }
 
 
+        [HttpGet("GetAllPublicFiles")]
+        public IActionResult GetAll()
+        {
+            return Ok(_filesRepository.GetAllPublicFiles());
+        }
+
+
+        [HttpGet("SearchPublicFilesByName/{name}")]
+        public IActionResult SearchPublicFilesByName(string name)
+        {
+            if (name == null)
+            {
+                return BadRequest();
+            }
+            var file = _filesRepository.SearchPublicFilesByName(name);
+            if (file == null)
+            {
+                return NotFound($"{name} Not Found!");
+            }
+            return Ok(file);
+
+        }
+
+
         [HttpPost("/AddFile")]
         public IActionResult AddFile(Files file)
         {
