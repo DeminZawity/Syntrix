@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { BakcgroundScreen, Container, Hover, Spacer } from "../../UI/Models";
 import { CommunityIcon, TimeSaverIcon, SecurityIcon } from "../../UI/Icons";
+import Logo from '../../UI/Images/Logo.gif';
 
 
 export function LandingPage() {
@@ -11,9 +12,11 @@ export function LandingPage() {
         <BakcgroundScreen>
             <MainContainer>
 
+
+
                 <NavContainer row>
                     <Title justifyStart >
-                        <TitleText centered>Syntrix</TitleText>
+                        <LogoPic src={Logo} alt="Logo" />
                     </Title>
                     <LoginButtonContainer justifyEnd>
                         <LoginButton centered pointer onClick={() => navigate(`/Login`)}>
@@ -21,6 +24,7 @@ export function LandingPage() {
                         </LoginButton>
                     </LoginButtonContainer>
                 </NavContainer>
+
 
 
                 <BodyContainer column centered>
@@ -33,10 +37,12 @@ export function LandingPage() {
                             <BodyMiddleText>A web Developers new favorite tool. An application to help you store your code snippets. Here, you can save all your old code snippets to look at in the future instead of sifting through your old projects.</BodyMiddleText>
                         </BodyMiddle>
                         <BodyFooter>
-                            <RegisterAccountButton centered pointer>Create an Account</RegisterAccountButton>
+                            <RegisterAccountButton centered pointer onClick={() => navigate(`/Register`)}>Create an Account</RegisterAccountButton>
                         </BodyFooter>
                     </BodyTextContainer>
                 </BodyContainer>
+
+
 
                 <FooterContainer centered>
                     <CardContainer row centered>
@@ -96,6 +102,8 @@ export function LandingPage() {
                     </CardContainer>
                 </FooterContainer>
 
+
+
             </MainContainer>
         </BakcgroundScreen>
     );
@@ -107,8 +115,14 @@ const MainContainer = styled(Container)`
 height: 95vh;
 `;
 
+const LogoPic = styled.img`
+height: 200px;
+width: 200px;
+border: 1px solid #0E0E0E;
+`;
 const NavContainer = styled(Container)`
-height: 5vh;
+height: 10vh;
+width: 99%;
 `;
 
 const Title = styled(Container)`
@@ -118,6 +132,7 @@ width: 50%;
 const TitleText = styled(Container)`
 width: 30%;
 font-size: 35px;
+margin-top: 50px;
 `;
 
 const LoginButtonContainer = styled(Container)`
@@ -125,22 +140,31 @@ width: 50%;
 `;
 
 const LoginButton = styled(Container)`
-border: 3px solid #4D4D4D;
+border: 2px solid white;
 height: 3vh;
 width: 7vw;
-margin-top: 18px;
+margin-top: 50px;
 margin-right: 20px;
 border-radius: 2px;
+transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
+
+&:hover {
+    transform: scale(1.1);
+    background:white;
+    color:black;
+  }
 `;
 
 const LoginText = styled(Container)`
-font-size: 20px;
+font-size: 15px;
+font-family: 'Gilroy'
 `;
 
 
 const BodyContainer = styled(Container)`
 margin-top: 70px;
-height: 55vh;
+height: 50vh;
+width: 98.8vw;
 `;
 
 const BodyTextContainer = styled(Container)`
@@ -153,24 +177,27 @@ const BodyHeader = styled(Container)`
 font-size: 80px;
 font-weight: bold;
 height: 15vh;
-width: 25vw;
+
 `;
 
 const BodyLineOne = styled(Container)`
 height: 7vh;
+font-family:"Gilroy-Bold"
 `;
 
 const BodyLineTwo = styled(Container)`
 color: #0487FF;
 height: 7vh;
+font-family:"Gilroy-Bold"
 `;
 
 const BodyMiddle = styled(Container)``;
 
 const BodyMiddleText = styled.p`
-width: 25vw;
+width: 30vw;
 color: #8D8D8D;
-font-size: 22px
+font-size: 25px;
+font-family: 'Gilroy';
 `;
 
 const BodyFooter = styled(Container)`
@@ -184,13 +211,23 @@ border-radius: 2px;
 color: black;
 background-color: #FFFFFF;
 margin-top: 25px;
-height: 3vh;
-width: 50%;
-font-size: 18px;
+height: 75px;
+width: 55%;
+font-size: 20px;
+transition: background-color 0.5s cubic-bezier(.17,.67,.83,.67), color 0.5s ease, transform 0.5s ease-in;
+
+&:hover {
+    color: black;
+    background-color: #0487FF;
+    border: 1px solid #0487FF;
+    font-weight: bold;
+    transform: scale(1.1);
+  }
 `;
 
 const FooterContainer = styled(Container)`
 height: 30vh;
+width: 98vw;
 `;
 
 const CardContainer = styled(Container)`
@@ -200,7 +237,7 @@ width: 75vw;
 
 const FooterCard = styled(Container)`
 border: 3px solid #4D4D4D;
-border-radius: 3px;
+border-radius: 8px;
 height: 27vh;
 width: 15vw;
 `;

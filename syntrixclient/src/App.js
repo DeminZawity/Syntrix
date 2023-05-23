@@ -5,17 +5,20 @@ import { RegisterPage } from "./Pages/Main/Register";
 import { LoginPage } from "./Pages/Main/Login";
 import { Protected } from "./Navigation/Protected"
 import { ProtectedPages} from "./Navigation/ProtectedPages"
-
+import GlobalStyle from './Assets/Fonts/Font';
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
+    <GlobalStyle />
+      <BrowserRouter>
       <Routes>
         <Route path="/Home" element={<LandingPage/>}/>
         <Route path="/Login" element={<LoginPage/>}/>
         <Route path="/Register" element={<RegisterPage/>}/>
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 
