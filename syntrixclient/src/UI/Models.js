@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+
+font-family: 'Gilroy', sans-serif;
+
   ${({ row }) =>
     row &&
     `
@@ -69,7 +72,7 @@ align-items:center;
 
 
 export const BakcgroundScreen = styled(Container)`
-    background-color: #0E0E0E;
+    background-color: #0d0d0d;
     height: 100vh;
     width: 100vw;
     color: white;
@@ -97,3 +100,6 @@ export const Hover = styled(Container)`
       cursor: pointer;
   `}
 `;
+
+
+
