@@ -102,4 +102,11 @@ export const Hover = styled(Container)`
 `;
 
 
+export const TextField = styled(Container)`
+width: 500px;
+height: 60px;
+border-radius: 5px;
+border: 3px solid #6A6A6A;
+`;
+
 
