@@ -3,12 +3,48 @@ import { useNavigate } from "react-router-dom";
 import { BakcgroundScreen, Container, Hover, Spacer } from "../../UI/Models";
 import Logo from '../../UI/Images/Logo.gif';
 import { Input } from "../../Components/InputField";
+import { useState } from "react";
+import { Register } from "../../API/Authentication";
+import toast, { Toaster } from "react-hot-toast";
 
 
 export function RegisterPage() {
     const navigate = useNavigate();
+    const [firstName, setFirstName] = useState(null);
+    const [lastName, setLastName] = useState(null);
+    const [email, setEmail] = useState(null);
+    const [title, setTitle] = useState(null);
+    const [password, setPassword] = useState(null);
+
+
+
+    const Validate = () => {
+        if((firstName == null || firstName === '') || (lastName == null || lastName === '') || (email == null || email === '') || (title == null || title === '') || (password == null || password === '')){
+            toast.error("Please complete all fields to continue.")
+            return;
+        }else{
+            AddUserInfo()
+        }
+    }
+
+    const AddUserInfo = async () => {
+        let AddUserData = await Register(firstName, lastName, title, email, password);
+
+        if(AddUserData !== false){
+            navigate("/Login")
+        }else{
+            toast.error("Email already exists")
+        }
+    }
+
+
 
     return (
+        <>
+         <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         <BakcgroundScreen>
             <MainContainer>
 
@@ -53,7 +89,7 @@ export function RegisterPage() {
                                 <LbodyHeader>First Name</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"John"} type={"text"}/>
+                                    <Input placeholder={"John"} type={"text"} onChange={(e) => setFirstName(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={30}/>
@@ -61,7 +97,7 @@ export function RegisterPage() {
                                 <LbodyHeader>Last Name</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"Doe"} type={"text"}/>
+                                    <Input placeholder={"Doe"} type={"text"} onChange={(e) => setLastName(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={60}/>
@@ -69,7 +105,7 @@ export function RegisterPage() {
                                 <LbodyHeader>Profession</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"Junior Developer"} type={"text"}/>
+                                    <Input placeholder={"Junior Developer"} type={"text"} onChange={(e) => setTitle(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={60}/>
@@ -77,7 +113,7 @@ export function RegisterPage() {
                                 <LbodyHeader>Email</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"John.Doe@gmail.com"} type={"email"}/>
+                                    <Input placeholder={"John.Doe@gmail.com"} type={"email"} onChange={(e) => setEmail(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={60}/>
@@ -85,13 +121,13 @@ export function RegisterPage() {
                                 <LbodyHeader>Password</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"***********"} type={"password"}/>
+                                    <Input placeholder={"***********"} type={"password"} onChange={(e) => setPassword(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={60}/>
                         </LBody>
                         <LFooter justifyEnd>
-                            <LoginButton centered pointer onClick={() => navigate(`/Login`)}>
+                            <LoginButton centered pointer  onClick={() => Validate()}>
                                 <LoginText centered>Register</LoginText>
                             </LoginButton>
                         </LFooter>
@@ -104,6 +140,7 @@ export function RegisterPage() {
 
             </MainContainer>
         </BakcgroundScreen>
+        </>
     );
 }
 

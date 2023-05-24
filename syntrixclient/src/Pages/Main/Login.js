@@ -3,17 +3,49 @@ import { useNavigate } from "react-router-dom";
 import { BakcgroundScreen, Container, Hover, Spacer } from "../../UI/Models";
 import Logo from '../../UI/Images/Logo.gif';
 import { Input } from "../../Components/InputField";
-
+import { Login } from "../../API/Authentication";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 export function LoginPage() {
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const UpdateUserInfo = (UserInfo) => {
+        dispatch({type : "LOGIN_USER", payload : UserInfo})
+    } 
+
+    
+
+
+    const LoginUser = async () => {
+        let LoginData = await Login(email, password);
+
+        if(LoginData === false ){
+            toast.error("Incorrect credentials. Please try again.")
+        } else {
+            UpdateUserInfo(LoginData)
+            navigate('/Home')
+        }
+
+    }
+
+
+
+
+
 
     return (
+        <>
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         <BakcgroundScreen>
             <MainContainer>
-
-
-
                 <NavContainer row>
                     <Title justifyStart >
                         <LogoPic src={Logo} alt="Logo" />
@@ -53,7 +85,7 @@ export function LoginPage() {
                                 <LbodyHeader>Email</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"John.Doe@gmail.com"} type={"email"}/>
+                                    <Input placeholder={"John.Doe@gmail.com"} type={"email"} onChange={(e) => setEmail(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                             <Spacer v={30}/>
@@ -61,12 +93,12 @@ export function LoginPage() {
                                 <LbodyHeader>Password</LbodyHeader>
                                 <Spacer v={10}/>
                                 <LbodyForm>
-                                    <Input placeholder={"*******"} type={"password"}/>
+                                    <Input placeholder={"*******"} type={"password"} onChange={(e) => setPassword(e)}/>
                                 </LbodyForm>
                             </LbodyCard>
                         </LBody>
                         <LFooter justifyEnd>
-                            <LoginButton centered pointer onClick={() => navigate(`/Login`)}>
+                            <LoginButton centered pointer onClick={() => LoginUser()}>
                                 <LoginText centered>Login</LoginText>
                             </LoginButton>
                         </LFooter>
@@ -79,6 +111,7 @@ export function LoginPage() {
 
             </MainContainer>
         </BakcgroundScreen>
+        </>
     );
 }
 

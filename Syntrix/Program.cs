@@ -36,7 +36,22 @@ namespace Syntrix
                 options.FallbackPolicy = options.DefaultPolicy;
             });
 
+            builder.Services.AddCors(options =>
+            options.AddPolicy("SyntrixPolicy",
+            builder =>
+            {
+                builder.AllowAnyOrigin();
+                builder.AllowAnyMethod();
+                builder.AllowAnyMethod();
+            }));
+
             var app = builder.Build();
+
+            app.UseCors(policy => policy.AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .SetIsOriginAllowed(origin => true)
+                            .AllowCredentials());
+            app.UseCors("SyntrixPolicy");
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

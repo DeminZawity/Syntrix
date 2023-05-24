@@ -46,14 +46,14 @@ namespace Syntrix.Controllers
         {
             if (user == null)
             {
-                return Unauthorized("Missing User Data");
+                return BadRequest(new { message = "Missing User Data" }); 
             }
 
             var isValidEmail = _usersRepository.isEmailAvailable(user.Email);
 
             if(isValidEmail == false)
             {
-                return Unauthorized("Email Invalid");
+                return BadRequest(new { message = "Email already exists" });
             }
 
             var newUser = new Users

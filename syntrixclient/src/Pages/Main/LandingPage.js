@@ -3,16 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { BakcgroundScreen, Container, Hover, Spacer } from "../../UI/Models";
 import { CommunityIcon, TimeSaverIcon, SecurityIcon } from "../../UI/Icons";
 import Logo from '../../UI/Images/Logo.gif';
-
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export function LandingPage() {
     const navigate = useNavigate();
 
+    // ------- REDUX VARIABLES ----------------
+
+    const UserInfo = useSelector((state) => state.User)
+
+    useEffect(() => {
+        console.log(UserInfo)
+    },[])
+
     return (
         <BakcgroundScreen>
             <MainContainer>
-
-
 
                 <NavContainer row>
                     <Title justifyStart >
