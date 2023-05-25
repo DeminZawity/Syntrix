@@ -95,4 +95,75 @@ export const TimeSaverIcon = (props) => (
   </svg>
   )
 
-  
+export const AddIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="M256 112v288m144-144H112"
+    />
+  </svg>
+)
+
+export const FolderIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill= {props.color}
+      stroke= {props.color}
+      d="M408 96H252.11a23.89 23.89 0 0 1-13.31-4L211 73.41A55.77 55.77 0 0 0 179.89 64H104a56.06 56.06 0 0 0-56 56v24h416c0-30.88-25.12-48-56-48zm15.75 352H88.25a56 56 0 0 1-55.93-55.15L16.18 228.11v-.28A48 48 0 0 1 64 176h384.1a48 48 0 0 1 47.8 51.83v.28l-16.22 164.74A56 56 0 0 1 423.75 448zm56.15-221.45z"
+      />
+  </svg>
+)
+
+export const FileIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill= {props.color}
+      stroke= {props.color}
+      d="M428 224H288a48 48 0 0 1-48-48V36a4 4 0 0 0-4-4h-92a64 64 0 0 0-64 64v320a64 64 0 0 0 64 64h224a64 64 0 0 0 64-64V228a4 4 0 0 0-4-4z"
+      />
+    <path
+      fill= {props.color}
+      stroke= {props.color}
+      d="M419.22 188.59 275.41 44.78a2 2 0 0 0-3.41 1.41V176a16 16 0 0 0 16 16h129.81a2 2 0 0 0 1.41-3.41z"
+      />
+  </svg>
+)
+
+
+export const OptionsIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={4}
+    height={18}
+    fill="none"
+    {...props}
+  >
+    <path
+      fill= {props.color}
+      stroke= {props.color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M3 2a1 1 0 1 0-2 0 1 1 0 0 0 2 0ZM3 9a1 1 0 1 0-2 0 1 1 0 0 0 2 0ZM3 16a1 1 0 1 0-2 0 1 1 0 0 0 2 0Z"
+    />
+  </svg>
+)

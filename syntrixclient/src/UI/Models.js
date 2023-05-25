@@ -69,7 +69,12 @@ align-items:center;
 `}
 `;
 
-
+export const Screen = styled(Container)`
+    background-color: #0d0d0d;
+    height: 90vh;
+    width: 100vw;
+    color: white;
+`
 
 export const BakcgroundScreen = styled(Container)`
     background-color: #0d0d0d;

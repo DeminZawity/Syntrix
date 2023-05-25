@@ -10,7 +10,10 @@ const initialState = {
         email:"",
         title:"",
     },
-    UserColor:""
+    UserColor:"",
+    IsAuthenticated: false,
+    CurrentTab : "Directory",
+    FolderId: null
 }
 
 const Bridge = (state = initialState, action) => {
@@ -18,8 +21,19 @@ const Bridge = (state = initialState, action) => {
         case "LOGIN_USER":
             return {
                 ...state, 
-                User: action.payload
+                User: action.payload,
+                IsAuthenticated: true,
             };
+        case "UPDATE_TAB":
+            return {
+                ...state,
+                CurrentTab : action.payload
+            };
+        case "SET_FOLDER":
+                return {
+                    ...state,
+                    CurrentTab : action.payload
+                };
         default:
             return state;
     }

@@ -36,7 +36,7 @@ namespace Syntrix.Controllers
 
 
         [HttpPost("/AddFolder")]
-        public IActionResult AddFolder(Folders folder)
+        public IActionResult AddFolder(FolderAdd folder)
         {
             _foldersRepository.AddFolder(folder);
             return Created("", folder);

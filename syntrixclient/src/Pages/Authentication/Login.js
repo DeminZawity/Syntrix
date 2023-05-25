@@ -28,7 +28,7 @@ export function LoginPage() {
             toast.error("Incorrect credentials. Please try again.")
         } else {
             UpdateUserInfo(LoginData)
-            navigate('/Home')
+            navigate('/Directory')
         }
 
     }
