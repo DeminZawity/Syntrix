@@ -44,12 +44,26 @@ export const Register = async(FirstName, LastName, Title, Email, Password) => {
     }    
 }
 
+export const GetUserFolders = async(userId) => {
 
+    const response = await fetch(
+        `https://localhost:7186/GetFolders/${userId}`, GetConfig);
+
+    
+    if(response.ok){
+        const GetFoldersResponse = await response.json();
+        return GetFoldersResponse;
+    }else{
+        return false
+    }
+    
+}
 
 
 const API = {
     Login,
-    Register
+    Register,
+    GetUserFolders
 }
 
 export default API;

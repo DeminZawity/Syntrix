@@ -22,11 +22,20 @@ namespace Syntrix.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT
-		                                    [Folders].[Id] AS FolderId,
-		                                    [Folders].[Name] AS FolderName,
-		                                    [Folders].[UserId] AS FolderUserId
-                                        FROM [Syntrix].[dbo].[Folders]
-                                            WHERE [Folders].[UserId] = @UserId";
+                                            F.[Id] AS FolderId,
+                                            F.[Name] AS FolderName,
+                                            F.[UserId] AS FolderUserId,
+                                            COUNT(fi.folderId) AS FileCount
+                                        FROM 
+                                            [Syntrix].[dbo].[Folders] F
+                                        LEFT JOIN 
+                                            [Syntrix].[dbo].[Files] fi ON F.[Id] = fi.[FolderId]
+                                        WHERE 
+                                            F.[UserId] = @UserId
+                                        GROUP BY
+                                            F.[Id],
+                                            F.[Name],
+                                            F.[UserId]";
 
                     DbUtils.AddParameter(cmd, "@UserId", userId);
                     var reader = cmd.ExecuteReader();
@@ -41,6 +50,7 @@ namespace Syntrix.Repositories
                             Id = DbUtils.GetInt(reader, "FolderId"),
                             Name = DbUtils.GetString(reader, "FolderName"),
                             UserId = DbUtils.GetInt(reader, "FolderUserId"),
+                            FileCount = DbUtils.GetInt(reader,"FileCount")
                         };
                         folderList.Add(folder);
                     }
@@ -54,7 +64,7 @@ namespace Syntrix.Repositories
 
         /*------------------Add Folder----------------------*/
 
-        public void AddFolder(Folders folder)
+        public void AddFolder(FolderAdd folder)
         {
             using (var conn = Connection)
             {

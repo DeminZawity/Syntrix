@@ -5,11 +5,19 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public int UserId { get; set; }
+        public int FileCount { get; set; }
     }
 
     public class FoldersEditView
     {
         public int Id { get; set; }
         public string Name { get; set; }
+    }
+
+    public class FolderAdd
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int UserId { get; set; }
     }
 }
