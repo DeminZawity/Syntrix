@@ -167,3 +167,95 @@ export const OptionsIcon = (props) => (
     />
   </svg>
 )
+
+export const EditIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill="none"
+      stroke="#0487FF"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="M384 224v184a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V168a40 40 0 0 1 40-40h167.48"
+    />
+    <path
+      stroke="#0487FF"
+      fill="#0487FF"
+      d="M459.94 53.25a16.06 16.06 0 0 0-23.22-.56L424.35 65a8 8 0 0 0 0 11.31l11.34 11.32a8 8 0 0 0 11.34 0l12.06-12c6.1-6.09 6.67-16.01.85-22.38zM399.34 90 218.82 270.2a9 9 0 0 0-2.31 3.93L208.16 299a3.91 3.91 0 0 0 4.86 4.86l24.85-8.35a9 9 0 0 0 3.93-2.31L422 112.66a9 9 0 0 0 0-12.66l-9.95-10a9 9 0 0 0-12.71 0z"
+    />
+  </svg>
+)
+
+export const BookmarkIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill={props.fillColor}
+      stroke="#0487FF"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z"
+    />
+  </svg>
+)
+
+export const DeleteIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill="none"
+      stroke="#0487FF"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="m112 112 20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320"
+    />
+    <path
+      stroke="#0487FF"
+      strokeLinecap="round"
+      strokeMiterlimit={10}
+      strokeWidth={32}
+      d="M80 112h352"
+    />
+    <path
+      fill="none"
+      stroke="#0487FF"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="M192 112V72h0a23.93 23.93 0 0 1 24-24h80a23.93 23.93 0 0 1 24 24h0v40m-64 64v224m-72-224 8 224m136-224-8 224"
+    />
+  </svg>
+)
+
+
+export const XIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={32}
+      d="M368 368 144 144m224 0L144 368"
+    />
+  </svg>
+)

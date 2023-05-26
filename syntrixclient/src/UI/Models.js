@@ -4,11 +4,17 @@ export const Container = styled.div`
 
 font-family: 'Gilroy', sans-serif;
 
+  ${({ brd }) =>
+  brd &&
+  `
+border:1px solid red;
+  `}
+
   ${({ row }) =>
     row &&
     `
-display:flex;
-flex-direction: row;
+  display:flex;
+  flex-direction: row;
 `}
 
   ${({ pointer }) =>
@@ -108,10 +114,17 @@ export const Hover = styled(Container)`
 
 
 export const TextField = styled(Container)`
-width: 500px;
-height: 60px;
-border-radius: 5px;
-border: 3px solid #6A6A6A;
+  width: 500px;
+  height: 60px;
+  border-radius: 5px;
+  border: 3px solid #6A6A6A;
+
+    ${({ isSmall }) =>
+    isSmall &&
+    `
+      border: 1px solid #6A6A6A;
+      height:3vh;
+  `}
 `;
 
 

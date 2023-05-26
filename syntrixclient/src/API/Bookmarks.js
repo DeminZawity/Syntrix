@@ -15,30 +15,15 @@ const GetPostConfig = (body) => {
 }
 
 
-export const Login = async(Email,Password) => {
+export const AddingBookmark = async(UserId, FolderId) => {
 
     const response = await fetch(
-        `https://localhost:7186/api/Users/Login/${Email}/${Password}`,GetConfig);
-
-    
-    if(response.ok){
-        const loginResponse = await response.json();
-        return loginResponse;
-    }else{
-        return false
-    }
-    
-}
-
-export const Register = async(FirstName, LastName, Title, Email, Password) => {
-
-    const response = await fetch(
-        `https://localhost:7186/AddUser`, GetPostConfig({FirstName,LastName,Title,Email,Password})
+        `https://localhost:7186/AddBookmark`, GetPostConfig({UserId, FolderId})
         );
 
     if(response.ok){
-        const RegisterResponse = await response.json();
-        return RegisterResponse;
+        const AddBookmarkResponse = await response.json();
+        return AddBookmarkResponse;
     }else {
         return false
     }    
@@ -46,10 +31,22 @@ export const Register = async(FirstName, LastName, Title, Email, Password) => {
 
 
 
+export const DeletingBookmark = async(Id) => {
+    const response = await fetch(
+        `https://localhost:7186/api/Bookmarks/DeleteBookmarkById/${Id}`, GetPostConfig({Id})
+        );
+
+    if(response.ok){
+        const AddBookmarkResponse = await response.json();
+        return AddBookmarkResponse;
+    }else {
+        return false
+    }    
+}
 
 const API = {
-    Login,
-    Register
+    AddingBookmark,
+    DeletingBookmark
 }
 
 export default API;

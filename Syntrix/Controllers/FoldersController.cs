@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Syntrix.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FoldersController : Controller
     {
         private readonly IFoldersRepository _foldersRepository;
@@ -44,7 +46,7 @@ namespace Syntrix.Controllers
 
 
 
-        [HttpPut("/EditFolder/{id}")]
+        [HttpPost("/EditFolder/{id}")]
         public IActionResult UpdateFolder(int id, FoldersEditView folder)
         {
             if (id != folder.Id)
@@ -53,16 +55,16 @@ namespace Syntrix.Controllers
             }
 
             _foldersRepository.UpdateFolder(folder);
-            return NoContent();
+            return Ok(folder);
         }
 
 
 
-        [HttpDelete("DeleteFolderById/{id}")]
+        [HttpPost("DeleteFolderById/{id}")]
         public IActionResult Delete(int id)
         {
             _foldersRepository.DeleteFolder(id);
-            return NoContent();
+            return Ok(id);
         }
 
 
