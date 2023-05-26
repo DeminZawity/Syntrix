@@ -6,7 +6,7 @@ namespace Syntrix.Repositories
     {
         void AddFolder(FolderAdd folder);
         void DeleteFolder(int id);
-        List<Folders> GetFoldersByUserId(int userId);
+        List<DirectoryFolder> GetFoldersByUserId(int userId);
         void UpdateFolder(FoldersEditView folder);
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Syntrix.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TagsController : Controller
     {
         private readonly ITagsRepository _tagsRepository;

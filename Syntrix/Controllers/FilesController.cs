@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Syntrix.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FilesController : Controller
     {
         private readonly IFilesRepository _filesRepository;

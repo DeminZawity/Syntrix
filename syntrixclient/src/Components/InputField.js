@@ -5,9 +5,9 @@ import { Container, Spacer, TextField } from "../UI/Models";
 
 export function Input(props) {
     return(
-    <TextField row>
+    <TextField row isSmall={props.isSmall ? props.isSmall : false}>
         <InputWrap centered>
-            <InputArea placeholder={props.placeholder} type={props.type} onChange={(e) => props.onChange(e.target.value)} />
+            <InputArea value={props.value} placeholder={props.placeholder} type={props.type} onChange={(e) => props.onChange(e.target.value)} />
         </InputWrap>
     </TextField>
     );

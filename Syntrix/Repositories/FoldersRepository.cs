@@ -14,7 +14,7 @@ namespace Syntrix.Repositories
 
         /*------------------Get Folders by UserId----------------------*/
 
-        public List<Folders> GetFoldersByUserId(int userId)
+        public List<DirectoryFolder> GetFoldersByUserId(int userId)
         {
             using (var conn = Connection)
             {
@@ -22,35 +22,40 @@ namespace Syntrix.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT
-                                            F.[Id] AS FolderId,
-                                            F.[Name] AS FolderName,
-                                            F.[UserId] AS FolderUserId,
-                                            COUNT(fi.folderId) AS FileCount
-                                        FROM 
-                                            [Syntrix].[dbo].[Folders] F
-                                        LEFT JOIN 
-                                            [Syntrix].[dbo].[Files] fi ON F.[Id] = fi.[FolderId]
-                                        WHERE 
-                                            F.[UserId] = @UserId
-                                        GROUP BY
-                                            F.[Id],
-                                            F.[Name],
-                                            F.[UserId]";
+                                        F.[Id] AS FolderId,
+                                        F.[Name] AS FolderName,
+                                        F.[UserId] AS FolderUserId,
+                                        COUNT(fi.FolderId) AS FileCount,
+                                        CASE WHEN B.FolderId IS NOT NULL THEN 1 ELSE 0 END AS IsBookmarked
+                                    FROM 
+                                        [Syntrix].[dbo].[Folders] F
+                                    LEFT JOIN 
+                                        [Syntrix].[dbo].[Files] fi ON F.[Id] = fi.[FolderId]
+                                    LEFT JOIN 
+                                        [Syntrix].[dbo].[Bookmarks] B ON F.[Id] = B.[FolderId] AND F.[UserId] = B.[UserId]
+                                    WHERE 
+                                        F.[UserId] = @UserId
+                                    GROUP BY
+                                        F.[Id],
+                                        F.[Name],
+                                        F.[UserId],
+                                        B.FolderId";
 
                     DbUtils.AddParameter(cmd, "@UserId", userId);
                     var reader = cmd.ExecuteReader();
 
 
 
-                    List<Folders> folderList = new List<Folders>();
+                    List<DirectoryFolder> folderList = new List<DirectoryFolder>();
                     while (reader.Read())
                     {
-                        var folder = new Folders()
+                        var folder = new DirectoryFolder()
                         {
                             Id = DbUtils.GetInt(reader, "FolderId"),
                             Name = DbUtils.GetString(reader, "FolderName"),
                             UserId = DbUtils.GetInt(reader, "FolderUserId"),
-                            FileCount = DbUtils.GetInt(reader,"FileCount")
+                            FileCount = DbUtils.GetInt(reader,"FileCount"),
+                            isBookmarked = DbUtils.GetInt(reader, "isBookmarked")
                         };
                         folderList.Add(folder);
                     }

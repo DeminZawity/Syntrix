@@ -4,6 +4,8 @@ using Syntrix.Repositories;
 
 namespace Syntrix.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class BookmarksController : Controller
     {
         private readonly IBookmarksRepository _bookmarksRepository;
@@ -42,11 +44,11 @@ namespace Syntrix.Controllers
 
 
 
-        [HttpDelete("DeleteBookmarkById/{id}")]
+        [HttpPost("DeleteBookmarkById/{id}")]
         public IActionResult Delete(int id)
         {
             _bookmarksRepository.DeleteBookmark(id);
-            return NoContent();
+            return Ok(id);
         }
 
 
