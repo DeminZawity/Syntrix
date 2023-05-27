@@ -32,6 +32,19 @@ export function DirectoryPage() {
     const UserInfo = useSelector((state) => state.User)
 
 
+    const UpdateFolderInfo = (obj) => {
+        dispatch({type : "SET_FOLDER", payload : {FolderId: obj.id, FolderName: obj.name}})
+    } 
+
+
+    const OpenFolder = (obj) => {
+        UpdateFolderInfo(obj)
+        navigate("/FilesPage")
+        console.log(obj)
+
+    } 
+
+
     const AddFolder = async () => {
         let AddingFolderData = await AddingFolder(UserInfo.id, newFolderName);
 
@@ -172,7 +185,7 @@ export function DirectoryPage() {
                 {
                    folders.map((obj) => (
                     <>
-                        <Folder data={obj} onEditFolder={(e) => EditFolder(e.id,e.name)} onDeleteFolder = {(e) => deleteFolder(e.id)} onBookmarkFolder={(e) => AddBookmark(e.id)}/>
+                        <Folder data={obj} onEditFolder={(e) => EditFolder(e.id,e.name)} onDeleteFolder = {(e) => deleteFolder(e.id)} onBookmarkFolder={(e) => AddBookmark(e.id)} onClick={() => OpenFolder(obj)}/>
                         {/* <Spacer h={30}/> */}
                     </>
                    ))     

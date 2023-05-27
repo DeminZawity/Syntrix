@@ -3,58 +3,51 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Container, Spacer } from "../UI/Models";
-import { FolderIcon, OptionsIcon } from "../UI/Icons";
-import { EditIcon, BookmarkIcon, DeleteIcon } from "../UI/Icons";
+import { FileIcon,OptionsIcon, EditIcon, DeleteIcon } from "../UI/Icons";
 import { useRef } from "react";
 
 
-export function Folder (props) {
+export function File (props) {
     const [options, setOption] = useState(false)
-    const folderRef = useRef(null);
-
+    const fileRef = useRef(null);
 
     useEffect(() => {
-      // Add event listener to handle click outside the component
-      const handleClickOutside = (event) => {
-        if (folderRef.current && !folderRef.current.contains(event.target)) {
-          setOption(false);
-        }
-      };
-  
-      document.addEventListener('mousedown', handleClickOutside);
-  
-      return () => {
-        // Clean up the event listener when the component unmounts
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
+        // Add event listener to handle click outside the component
+        const handleClickOutside = (event) => {
+          if (fileRef.current && !fileRef.current.contains(event.target)) {
+            setOption(false);
+          }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+          // Clean up the event listener when the component unmounts
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, []);
 
-
-    const handleClick = (e) => {
+      const handleClick = (e) => {
         e.stopPropagation();
         setOption(true)
     }
 
 
-
-
     return(
-        
         <FolderContainer row pointer onClick={() => props.onClick()}>
             <CardHeader centered>
-                <FolderIcon size={40} color={"#0487FF"}/>
+                <FileIcon size={40} color={"#0487FF"}/>
             </CardHeader>
             <CardBody column centered>
                 <BodyHeader justifyStart>{props.data.name}</BodyHeader>
                 <Spacer v={10}/>
-                <BodyFooter justifyStart>{props.data.fileCount} Files</BodyFooter>
             </CardBody>
             <CardFooter centered onClick={(e) => handleClick(e)}>
                 <OptionsIcon color={"#989898"} />
                 {options && 
-                    <FOContainer column ref={folderRef}>
+                    <FOContainer column ref={fileRef}>
 
-                    <Option row onClick={() => props.onEditFolder(props.data)}>
+                    <Option row onClick={() => props.onEditFile(props.data)}>
                         <IconContainer centered>
                             <EditIcon size={18}/>
                         </IconContainer>
@@ -65,23 +58,12 @@ export function Folder (props) {
         
                     <Line></Line>
         
-                    <Option row onClick={() => props.onDeleteFolder(props.data)}>
+                    <Option row onClick={() => props.onDeleteFile(props.data)}>
                         <IconContainer centered>
                             <DeleteIcon size={18} color={"#0487FF"}/>
                         </IconContainer>
                         <OptionText>
                             Delete
-                        </OptionText>
-                    </Option>
-        
-                    <Line></Line>
-        
-                    <Option row onClick={() => props.onBookmarkFolder(props.data)}>
-                        <IconContainer centered>
-                            <BookmarkIcon size={18} fillColor={props.data.isBookmarked ? "#0487FF" : "none"} />
-                        </IconContainer>
-                        <OptionText>
-                            {props.data.isBookmarked ? 'Remove' : 'Bookmark'}
                         </OptionText>
                     </Option>
         
@@ -124,7 +106,7 @@ const CardFooter = styled(Container)`
 
 const BodyHeader = styled(Container)`
     width: 100%;
-    font-size: 20px;
+    font-size: 15px;
 `;
 
 const BodyFooter = styled(Container)`
@@ -133,12 +115,12 @@ const BodyFooter = styled(Container)`
 `;
 
 const FOContainer = styled(Container)`
-    height: 8vh;
+    height: 6vh;
     width: 150px;
     position: absolute;
     background-color: #292929;
     border-radius: 5px;
-    margin-right: 115px;
+    margin-right: 120px;
 `;
 
 const Option = styled(Container)`
