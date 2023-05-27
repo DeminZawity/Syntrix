@@ -82,7 +82,7 @@ namespace Syntrix.Repositories
 
         /*------------------Update Tag----------------------*/
 
-        public void UpdateTag(Tags tag)
+        public void UpdateTag(TagsEditView tag)
         {
             using (var conn = Connection)
             {

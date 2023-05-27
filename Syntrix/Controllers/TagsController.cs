@@ -4,6 +4,7 @@ using Syntrix.Models;
 using Syntrix.Repositories;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Authorization;
+using Azure;
 
 namespace Syntrix.Controllers
 {
@@ -46,8 +47,8 @@ namespace Syntrix.Controllers
 
 
 
-        [HttpPut("/EditTag/{id}")]
-        public IActionResult UpdateTag(int id, Tags tag)
+        [HttpPost("/EditTag/{id}")]
+        public IActionResult UpdateTag(int id, TagsEditView tag)
         {
             if (id != tag.Id)
             {
@@ -55,16 +56,16 @@ namespace Syntrix.Controllers
             }
 
             _tagsRepository.UpdateTag(tag);
-            return NoContent();
+            return Ok(tag);
         }
 
 
 
-        [HttpDelete("DeleteTagById/{id}")]
+        [HttpPost("DeleteTagById/{id}")]
         public IActionResult Delete(int id)
         {
             _tagsRepository.DeleteTag(id);
-            return NoContent();
+            return Ok(id);
         }
 
 

@@ -25,7 +25,6 @@ export function DirectoryPage() {
     const [isUpdating,setIsUpdating] = useState(false)
     const [isAddingNew,setIsAddingNew] = useState(false)
     const [newFolderName,setNewFolderName] = useState(null)
-    const [bookmarkId, setBookmarkId] = useState(null)
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -137,7 +136,7 @@ export function DirectoryPage() {
                             isUpdating && (
                                 <NewFolderContainer alignEnd justifyEnd row>
                                     <IconContainer row centered pointer onClick={() => setIsUpdating(false)}>
-                                        <XIcon size={32} color={"white"} />
+                                        <XIcon size={32} color={"white"} />`    `
                                     </IconContainer>
                                     <Input isSmall value={updateFolderName} onChange={(e) => setUpdateFolderName(e)} />
                                 

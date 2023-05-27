@@ -7,6 +7,6 @@ namespace Syntrix.Repositories
         void AddTag(Tags tag);
         void DeleteTag(int id);
         List<Tags> GetTagsByUserId(int userId);
-        void UpdateTag(Tags tag);
+        void UpdateTag(TagsEditView tag);
     }
 }
