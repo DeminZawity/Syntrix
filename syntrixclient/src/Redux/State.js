@@ -13,7 +13,19 @@ const initialState = {
     UserColor:"",
     IsAuthenticated: false,
     CurrentTab : "Directory",
-    FolderId: null
+    CurrentWorkingFolder:{
+        FolderId: null,
+        FolderName: null,
+    },
+    CurrentWorkingFile:{
+        FileId: null,
+        FileName: null,
+        FileFolderId: null,
+        FileCodeType: null,
+        FileDescription: null,
+        FileContent: null,
+        FileIsPublic: null,
+    }
 }
 
 const Bridge = (state = initialState, action) => {
@@ -31,8 +43,13 @@ const Bridge = (state = initialState, action) => {
             };
         case "SET_FOLDER":
                 return {
-                    ...state,
-                    CurrentTab : action.payload
+                ...state,
+                CurrentWorkingFolder: action.payload,
+                };
+       case "SET_FILE":
+                return {
+                ...state,
+                CurrentWorkingFile: action.payload,
                 };
         default:
             return state;

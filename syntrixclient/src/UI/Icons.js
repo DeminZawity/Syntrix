@@ -217,14 +217,14 @@ export const DeleteIcon = (props) => (
   >
     <path
       fill="none"
-      stroke="#0487FF"
+      stroke={props.color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={32}
       d="m112 112 20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320"
     />
     <path
-      stroke="#0487FF"
+      stroke={props.color}
       strokeLinecap="round"
       strokeMiterlimit={10}
       strokeWidth={32}
@@ -232,7 +232,7 @@ export const DeleteIcon = (props) => (
     />
     <path
       fill="none"
-      stroke="#0487FF"
+      stroke={props.color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={32}
@@ -256,6 +256,25 @@ export const XIcon = (props) => (
       strokeLinejoin="round"
       strokeWidth={32}
       d="M368 368 144 144m224 0L144 368"
+    />
+  </svg>
+)
+
+
+export const BackIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="ionicon"
+    viewBox="0 0 512 512"
+    {...props} width={props.size} height={props.size}
+  >
+    <path
+      fill="none"
+      stroke="white"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={48}
+      d="M244 400 100 256l144-144M120 256h292"
     />
   </svg>
 )

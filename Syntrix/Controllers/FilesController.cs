@@ -68,12 +68,12 @@ namespace Syntrix.Controllers
         }
 
 
-        [HttpPut("/EditFile/{id}")]
+        [HttpPost("/EditFile/{id}")]
         public IActionResult UpdateFile(int id, FilesEditView file)
         {
             if (id != file.Id)
             {
-                return BadRequest();
+                return Ok(file);
             }
 
             _filesRepository.UpdateFile(file);
@@ -81,11 +81,11 @@ namespace Syntrix.Controllers
         }
 
 
-        [HttpDelete("DeleteFileById/{id}")]
+        [HttpPost("DeleteFileById/{id}")]
         public IActionResult Delete(int id)
         {
             _filesRepository.DeleteFile(id);
-            return NoContent();
+            return Ok(id);
         }
     }
 }
