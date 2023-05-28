@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { Screen, Container, Hover, Spacer } from "../UI/Models";
-import { AddIcon, BackIcon, XIcon } from "../UI/Icons"
+import { AddIcon, BackIcon, XIcon,EditIcon } from "../UI/Icons"
 import CodeEditor from "../Components/CodeEditor";
 import { DeleteIcon } from "../UI/Icons";
 import { Tag } from "../Components/Tag";
@@ -14,15 +14,41 @@ import { Checkbox } from "../Components/Checkbox";
 import { GetUserTags } from "../API/Tags";
 import {AddTagToFile,GetFileTags,DeleteFileTag} from "../API/Tags"
 import { ExistingTag } from "../Components/ExistingTag";
+import { GetFolderFiles, GetFileDetail, EditingFile } from "../API/Files";
+import Dropdown from "../Components/Dropdown";
+
+
 
 export function FileDetailsPage() {
+    const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
+    const GetCurrentFolder = useSelector((state) => state.CurrentWorkingFolder)
+    const UserInfo = useSelector((state) => state.User)
     const [isAddModalOn, setIsAddModalOn] = useState(false)
     const [tags, setTags] = useState(null)
     const [fileTags,setFileTags] = useState([])
+    const [fileName,setFileName] = useState("")
+    const [code,setCode] = useState(null)
+    const [description,setDescription] = useState(null)
+    const [codeType,setCodeType] = useState(null)
+    const [isPublic,setIsPublic] = useState(true)
+    const [isEditingName,setIsEditingName] = useState(false)
+    const navigate = useNavigate();
 
 
-    const UserInfo = useSelector((state) => state.User)
-    const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
+    const GetFileData = async () => {
+        let FileData = await GetFileDetail(GetCurrentFile.FileId)
+        console.log(FileData)
+        if(FileData != false){
+            console.log(FileData)
+            setFileName(FileData.name);
+            setCode(FileData.content)
+            setDescription(FileData.description)
+            setIsPublic(FileData.isPublic)
+            setCodeType(FileData.codeType)
+        }
+    }
+
+
 
     const GetTags = async () => {
         let TagsData = await GetUserTags(UserInfo.id)
@@ -69,11 +95,27 @@ export function FileDetailsPage() {
         }
     }
 
+
+    const saveChanges = async () => {
+
+        let SaveFile = await EditingFile(GetCurrentFile.FileId, fileName,GetCurrentFile.FolderId,codeType,description,code,isPublic)
+
+        if(SaveFile != false){
+            toast.success("File Saved Successfully")
+        }
+    }
+
     useEffect(() => {
         GetTags()
+        GetFileData()
     },[])
 
     return(
+        <>
+                            <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
         <Screen row>
         <Spacer h={200}/>
 
@@ -105,12 +147,23 @@ export function FileDetailsPage() {
 
  
                 <Header row >
-                    <IconContainer centered>
-                        <BackIcon size={30}/>
+                    <IconContainer centered pointer>
+                        <BackIcon size={30} onClick={() => navigate(`/FilesPage`)}/>
                     </IconContainer>
-                    <Title column alignStart>
-                        <Spacer v={12}/>
-                        How to create your own custom react hook 
+                    <Title row justifyStart alignCenter>
+                        {/* {GetCurrentFile.FileName} */}
+                        <FileNameInput isEditing={isEditingName} disabled={isEditingName != true} onChange={(e) => setFileName(e.target.value)} value={fileName} inputWidth={fileName.length * 11} />
+                        <EditIconContainer row centered pointer onClick={() => setIsEditingName(!isEditingName)}>
+                            {
+                                isEditingName ? (
+                                    <XIcon size={33} />
+
+                                ) : (
+
+                                    <EditIcon size={33} />
+                                )
+                            }
+                        </EditIconContainer>
                     </Title>
                 </Header>
                 <Body row >
@@ -121,29 +174,35 @@ export function FileDetailsPage() {
                         </CCHeader>
                         <CCBlock>
                             <BLOCK>
-                                <CodeEditor />
+                                {
+                                    (code != null || code != undefined) && (
+                                        <CodeEditor onChange={(e) => setCode(e)} content={code} type={codeType}/>
+                                    )
+                                }
                             </BLOCK>
                         </CCBlock>
                     </CodeContainer>
                     <DetailsContainer column  >
                         <DecriptionContainer column  >
                             <DHeader justifyStart>Description</DHeader>
-                            <DInput />
+                            <DInput onChange={(e) => setDescription(e.target.value)} value={description}/>
                         </DecriptionContainer>
-                        <CodeTypeContainer  >
+                        <CodeTypeContainer>
                             <CTHeader justifyStart>Code Type
                             </CTHeader>
-                            <CTInput/>
+                            {/* <CTInput onChange={(e) => setCodeType(e.target.value)} value={codeType} /> */}
+                            <Spacer v={12} />
+                            <Dropdown onChange={(e) => setCodeType(e)} type={codeType} />
                         </CodeTypeContainer>
                         <VisabilityContainer  >
                             <VHeader justifyStart>Visibility</VHeader>
                             <VInput row>
                                 <VIDetail row>
-                                    <VIInput name="visibilityRadio" type="radio"/>
+                                    <VIInput name="visibilityRadio" onChange={(e) => setIsPublic(e.target.checked)} type="radio" checked={isPublic}/>
                                     <VIText justifyStart>Public</VIText>
                                 </VIDetail>
                                 <VIDetail row>
-                                    <VIInput name="visibilityRadio" type="radio"/>
+                                    <VIInput name="visibilityRadio" onChange={(e) => setIsPublic(!e.target.checked)} type="radio" checked={!isPublic}/>
                                     <VIText justifyStart>Private</VIText>
                                 </VIDetail>
                             </VInput>
@@ -164,7 +223,7 @@ export function FileDetailsPage() {
             
                             </TInput>
                         </TagsContainer>
-                        <SaveButtonContainer  >
+                        <SaveButtonContainer  pointer onClick={() => saveChanges()}>
                             <SaveButton centered> Save</SaveButton>
                         </SaveButtonContainer>
                     </DetailsContainer>
@@ -173,8 +232,36 @@ export function FileDetailsPage() {
             </FDContainer>
 
         </Screen>
+        </>
     )
 }
+
+
+const FileNameInput = styled.input`
+    height:90%;
+    border-radius:4px;
+    background:transparent;
+    font-family:"Gilroy";
+    font-size:22px;
+    color:white;
+    outline:none;
+    border:none;
+    min-width:55px;
+    width: ${(props) => props.inputWidth}px;
+
+    ${({ isEditing }) =>
+    isEditing &&
+    `
+        background-color: #333333;
+    
+    `
+    }
+`
+
+const EditIconContainer = styled(Container)`
+    height:100%;
+    width:60px;
+`
 
 const Header = styled(Container)`
     height: 5%;
@@ -184,6 +271,7 @@ const IconContainer = styled(Container)`
 `;
 const Title = styled(Container)`
     font-size: 25px;
+    width:60%;
 `;
 const CodeContainer = styled(Container)`
     height: 99%;
@@ -228,6 +316,7 @@ const DecriptionContainer= styled(Container)`
 const CodeTypeContainer= styled(Container)`
     height: 10%;
     width: 100%;
+        padding-left: 20px;
 `;
 
 const VisabilityContainer= styled(Container)`
@@ -255,25 +344,34 @@ const DInput= styled.textarea`
     margin-left: 20px;
     margin-right: 20px;
     height: 85%;
-    background-color: #131313;
+    border:1px solid #131313;
+    border-radius:4px;
+    padding-top:10px;
+    padding-left:5px;
+    text-indent: 2em;
+    outline:none;
+    background-color: #333333;
     color: white;
     display: flex;
     flex-wrap: wrap;
     font-size: 15px;
+    font-family:"Gilroy"
 `;
 
 const CTHeader= styled(Container)`
     height: 28%;
     font-size: 22px;
-    padding-left: 20px;
 `;
 
 const CTInput= styled.textarea`
     margin-left: 20px;
     margin-right: 20px;
     width: 94%;
-    background-color: #131313;
+    background-color: #333333;
     height: 40%;
+    font-family:"Gilroy";
+    font-size:14px;
+    color:white;
 `;
 
 const VHeader= styled(Container)`

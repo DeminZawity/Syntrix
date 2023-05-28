@@ -36,6 +36,23 @@ namespace Syntrix.Controllers
         }
 
 
+        [HttpGet("/GetFile/{fileId}")]
+        public IActionResult GetFileById(int fileId)
+        {
+            if (fileId == null)
+            {
+                return BadRequest();
+            }
+            var file = _filesRepository.GetFileById(fileId);
+            if (file == null)
+            {
+                return NotFound($"{fileId} Not Found!");
+            }
+            return Ok(file);
+
+        }
+
+
         [HttpGet("GetAllPublicFiles")]
         public IActionResult GetAll()
         {
@@ -77,7 +94,7 @@ namespace Syntrix.Controllers
             }
 
             _filesRepository.UpdateFile(file);
-            return NoContent();
+            return Ok(file.Id);
         }
 
 

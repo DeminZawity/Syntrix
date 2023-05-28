@@ -46,7 +46,6 @@ export function FilesPage() {
     const OpenFile = (obj) => {
         UpdateFileInfo(obj)
         navigate("/FileDetails")
-        console.log(obj)
     }
 
 

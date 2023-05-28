@@ -59,6 +59,55 @@ namespace Syntrix.Repositories
 
 
 
+
+        /*------------------Get File by Id----------------------*/
+
+
+        public Files GetFileById(int fileId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
+                                            [Files].[Id] AS FileId,
+                                            [Files].[Name] AS FileName,
+                                            [Files].[FolderId] AS FileFolderId,
+                                            [Files].[CodeType] AS FileCodeType,
+                                            [Files].[Description] AS FileDescription,
+                                            [Files].[Content] AS FileContent,
+                                            [Files].[IsPublic] AS FileIsPublic
+                                        FROM [Syntrix].[dbo].Files
+                                        WHERE [Files].[Id] = @FileId";
+
+                    DbUtils.AddParameter(cmd, "@FileId", fileId);
+                    var reader = cmd.ExecuteReader();
+                    Files file = null;
+                    while (reader.Read())
+                    {
+                        if (file == null)
+                        {
+                            file = new Files()
+                            {
+                                Id = DbUtils.GetInt(reader, "FileId"),
+                                Name = DbUtils.GetString(reader, "FileName"),
+                                FolderId = DbUtils.GetInt(reader, "FileFolderId"),
+                                CodeType = DbUtils.GetString(reader, "FileCodeType"),
+                                Description = DbUtils.GetString(reader, "FileDescription"),
+                                Content = DbUtils.GetString(reader, "FileContent"),
+                                IsPublic = DbUtils.GetBoolean(reader, "FileIsPublic"),
+                            };
+                        }
+                    }
+                    reader.Close();
+                    return file;
+
+                }
+            }
+        }
+
+
         /*------------------Add Files----------------------*/
 
         public void AddFile(Files file)
