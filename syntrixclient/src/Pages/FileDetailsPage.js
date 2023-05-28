@@ -5,34 +5,98 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { Screen, Container, Hover, Spacer } from "../UI/Models";
-import { BackIcon } from "../UI/Icons"
+import { AddIcon, BackIcon, XIcon } from "../UI/Icons"
 import CodeEditor from "../Components/CodeEditor";
 import { DeleteIcon } from "../UI/Icons";
 import { Tag } from "../Components/Tag";
 import  Fade  from "@mui/material/Fade";
-
+import { Checkbox } from "../Components/Checkbox";
+import { GetUserTags } from "../API/Tags";
+import {AddTagToFile,GetFileTags,DeleteFileTag} from "../API/Tags"
+import { ExistingTag } from "../Components/ExistingTag";
 
 export function FileDetailsPage() {
     const [isAddModalOn, setIsAddModalOn] = useState(false)
+    const [tags, setTags] = useState(null)
+    const [fileTags,setFileTags] = useState([])
 
+
+    const UserInfo = useSelector((state) => state.User)
+    const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
+
+    const GetTags = async () => {
+        let TagsData = await GetUserTags(UserInfo.id)
+        let FormattedTags = TagsData.map(obj => ({...obj, isSelected : false}))
+
+        let UserFileTag = await GetFileTags(GetCurrentFile.FileId)
+        setFileTags(UserFileTag)
+
+        var existingTags = UserFileTag.map((obj) => obj.tagId)
+
+        var tagsWithoutExisting = FormattedTags.filter((obj) => !existingTags.includes(obj.id))
+
+        setTags(tagsWithoutExisting)
+    }
+
+
+
+    const updateSelectedTag = (value,id) => {
+        const updatedTags = tags.map((item) => item.id === id ? {...item, isSelected : value} : item)
+        setTags(updatedTags)
+    
+    }
+
+    const saveAddTags = async () => {
+    
+        const selectedTags = tags.filter((obj) => obj.isSelected === true).map((obj) => obj.id)
+
+        const UpdateTags = await AddTagToFile(GetCurrentFile.FileId,selectedTags)
+
+        if(UpdateTags !== false){
+            setIsAddModalOn(false)
+            setTags([])
+            toast.success(`Tags Updated!`)
+            GetTags()
+        }
+    }
+
+    const removeUserFileTag = async (id) => {
+        const DeleteTag = await DeleteFileTag(id);
+
+        if(DeleteTag !== false){
+            setTags([])
+            GetTags();
+        }
+    }
+
+    useEffect(() => {
+        GetTags()
+    },[])
 
     return(
         <Screen row>
         <Spacer h={200}/>
 
             <FDContainer>
-            <Fade in={isAddModalOn} style={{transitionDelay:"500ms"}}>
+            <Fade in={isAddModalOn} style={{transitionDelay:"140ms"}}>
                 <ModalContainer>
                     <ATContainer column>
+                        <XIcon size={40} onClick={() => setIsAddModalOn(false)}/>
                         <ATHeader centered>Add Tag</ATHeader>
                         <ATSubHeader>Select all that apply</ATSubHeader>
                         <ATBody>
                             <ATDetail row>
-                                <ATCheckbox type="checkbox" centered/>
-                                <ATName centered>React</ATName>
+                                {
+                                    tags?.map((obj) => (
+                                        <Checkbox data={obj} onChange={(e) => updateSelectedTag(e,obj.id)}/>
+
+                                    ))
+                                }
+
+                                {/* <ATCheckbox type="checkbox" centered/> */}
                             </ATDetail>
                         </ATBody>
-                        <ATFooter centered>
+                        <ATFooter centered onClick={() => saveAddTags()}>
                             <SaveTagsButton centered>Save Tags</SaveTagsButton>
                         </ATFooter>
                     </ATContainer>
@@ -87,29 +151,17 @@ export function FileDetailsPage() {
                         <TagsContainer  >
                             <THeader justifyStart>Tags</THeader>
                             <TInput   column>
-                                <TagsComp row>
-                                    <Tg centered>React</Tg>
-                                    <Spacer h={8}/>
-                                    <TgTrash centered>
-                                        <DeleteIcon size={25} color={"white"}/>
-                                    </TgTrash>
-                                    <Spacer h={8}/>
-                                    <Tg centered>Development</Tg>
-                                    <Spacer h={8}/>
-                                    <TgTrash centered>
-                                        <DeleteIcon size={25} color={"white"}/>
-                                    </TgTrash>
-                                    <Spacer h={8}/>
-                                    <Tg centered>Front-End</Tg>
-                                    <Spacer h={8}/>
-                                    <TgTrash centered>
-                                        <DeleteIcon size={25} color={"white"}/>
-                                    </TgTrash>
+                                <TagsComp row alignCenter>
+                                    
+                                    {fileTags != null  && fileTags.map((obj) => (
+                                        <ExistingTag data={obj} onDelete={(e) => removeUserFileTag(e)}/>
+                                    ))}
+                                    <AddTag centered pointer onClick={() =>setIsAddModalOn(true)}>
+                                        <AddIcon size={32} color={'white'} />
+                                </AddTag>
                                 </TagsComp>
                                 <Spacer v={40}/>
-                                <AddTag centered onClick={() =>setIsAddModalOn(true)}>
-                                    Add Tag
-                                </AddTag>
+            
                             </TInput>
                         </TagsContainer>
                         <SaveButtonContainer  >
@@ -290,11 +342,12 @@ const TgTrash = styled(Container)`
 
 const AddTag = styled(Container)`
     border: 1px solid #0682F4;
-    height: 40px;
-    width: 610px;
+    height: 30px;
+    width: 30px;
     font-size: 17px;
     border-radius: 3px;
     background-color: #0682F4;
+    margin-bottom:-15px;
 `;
 
 const SaveButton = styled(Container)`
@@ -351,7 +404,8 @@ const ModalContainer = styled(Container)`
 `;
 
 const ATDetail = styled(Container)`
-    height: 40px;  
+    height: 40px;
+    flex-wrap:wrap;  
 `;
 
 const ATFooter = styled(Container)`

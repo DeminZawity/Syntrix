@@ -1,4 +1,5 @@
-﻿using Syntrix.Models;
+﻿using Microsoft.Data.SqlClient;
+using Syntrix.Models;
 using Syntrix.Repositories;
 using Syntrix.Utils;
 using System.Reflection.PortableExecutable;
@@ -14,7 +15,7 @@ namespace Syntrix.Repositories
 
         /*------------------Get FileTags by FileId----------------------*/
 
-        public List<FileTagsDTO> GetFileTagsByFileId(int fileId)
+        public List<FileTagWithFileTagID> GetFileTagsByFileId(int fileId)
         {
             using (var conn = Connection)
             {
@@ -24,7 +25,8 @@ namespace Syntrix.Repositories
                     cmd.CommandText = @"SELECT
                                             [FileTags].[Id] AS FileTagId,
                                             [Tags].Name AS TagName,
-                                            [Tags].Color AS TagColor
+                                            [Tags].Color AS TagColor,
+                                            [FileTags].TagId as TagID
                                         FROM [Syntrix].[dbo].[FileTags]
                                         JOIN [Files] on [FileTags].[FileId] = [Files].[Id]
                                         JOIN [Tags] on [FileTags].[TagId] = [Tags].[Id]
@@ -32,14 +34,15 @@ namespace Syntrix.Repositories
                     DbUtils.AddParameter(cmd, "@FileId", fileId);
                     var reader = cmd.ExecuteReader();
 
-                    List<FileTagsDTO> fileTagsList = new List<FileTagsDTO>();
+                    List<FileTagWithFileTagID> fileTagsList = new List<FileTagWithFileTagID>();
                     while (reader.Read())
                     {
-                        var fileTag = new FileTagsDTO()
+                        var fileTag = new FileTagWithFileTagID()
                         {
                             Id = DbUtils.GetInt(reader, "FileTagId"),
                             TagName = DbUtils.GetString(reader, "TagName"),
                             FileColor = DbUtils.GetString(reader, "TagColor"),
+                            TagId = DbUtils.GetInt(reader,"TagID")
                         };
                         fileTagsList.Add(fileTag);
                     }
@@ -67,6 +70,29 @@ namespace Syntrix.Repositories
                     DbUtils.AddParameter(cmd, "@tagId", fileTag.TagId);
                     DbUtils.AddParameter(cmd, "@fileId", fileTag.FileId);
                     fileTag.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void AddMultipleFileTag(MultiFileTag fileTag)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO FileTags
+                        (TagId, FileId)
+                        OUTPUT INSERTED.ID
+                        VALUES (@tagId, @fileId)";
+
+                    foreach (int tagId in fileTag.TagIds)
+                    {
+                        cmd.Parameters.Clear();
+                        DbUtils.AddParameter(cmd, "@tagId", tagId);
+                        DbUtils.AddParameter(cmd, "@fileId", fileTag.FileId);
+                        int insertedId = (int)cmd.ExecuteScalar();
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ export const GetFolderFiles = async(FolderId) => {
 }
 
 
-export const AddingFile = async(Name, FolderId, CodeType, Description, Content, IsPublic) => {
+export const AddingFile = async({Name, FolderId, CodeType, Description, Content, IsPublic}) => {
 
     const response = await fetch(
         `https://localhost:7186/AddFile`, GetPostConfig({Name, FolderId, CodeType, Description, Content, IsPublic})

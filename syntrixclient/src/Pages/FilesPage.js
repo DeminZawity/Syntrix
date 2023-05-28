@@ -5,18 +5,22 @@ import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Screen, Container, Hover, Spacer } from "../UI/Models";
-import { AddIcon } from "../UI/Icons";
+import { AddIcon, XIcon } from "../UI/Icons";
 import { File } from "../Components/File";
 import { GetFolderFiles } from "../API/Files";
-import { DeletingFile } from "../API/Files";
+import { DeletingFile, AddingFile } from "../API/Files";
+import { Input } from "../Components/InputField";
 
 
 export function FilesPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [files, setFiles] = useState([]);
+    const [isAddingNew, setIsAddingNew] = useState(false);
     const FilesInfo = useSelector((state) => state.CurrentWorkingFile)
     const FolderInfo = useSelector((state) => state.CurrentWorkingFolder)
+
+    const [newFileName,setNewFileName] = useState(null)
 
     const GetFiles = async () => {
         let FilesData = await GetFolderFiles(FolderInfo.FolderId);
@@ -46,6 +50,27 @@ export function FilesPage() {
     }
 
 
+    const AddFile = async() => {
+        const FileObject = {
+            Name : newFileName,
+            FolderId : FolderInfo.FolderId,
+            CodeType : "",
+            Description : "",
+            Content : "",
+            isPublic : false
+        }
+
+        let AddFileData = await AddingFile(FileObject);
+
+        if(AddFileData !== false){
+            setIsAddingNew(false)
+            toast.success(`${newFileName} Folder created!`)
+            GetFiles()
+        }
+
+    }
+
+
     useEffect(() => {
         GetFiles()
         console.log(FolderInfo)
@@ -67,19 +92,48 @@ export function FilesPage() {
                         <FolderName>
                             {FolderInfo.FolderName}
                         </FolderName>
-                        {/* <Spacer v={75}/> */}
                         <FolderCountHeader justifyStart column>
                             <Spacer v={40}/>
                             Files • {files.length}
                         </FolderCountHeader>
                 </FolderCountContainer>
                     <Spacer v={75}/>
-                    <AddFolderContainer>
-                        <AddFolderButton row centered pointer onClick={() => navigate(`/FileDetails`)}>
-                            <AddIcon size={25}/>
-                            <Spacer h={5} />
-                                Add File
-                         </AddFolderButton>
+                    <AddFolderContainer alignEnd row>
+                        {
+                            isAddingNew && (
+                                <NewFolderContainer alignEnd justifyEnd row>
+                                    <IconContainer row centered pointer onClick={() => setIsAddingNew(false)}>
+                                        <XIcon size={32} color={"white"} />
+
+                                    </IconContainer>
+                                    <Input isSmall onChange={(e) => setNewFileName(e)} />
+                                </NewFolderContainer>
+                            )
+                        }
+
+                        {
+                            isAddingNew && (
+                                <>
+                                    <AddFolderButton row centered pointer onClick={() => AddFile()}>
+                                        <Spacer h={5} />
+                                            Create File
+                                    </AddFolderButton>
+                                </>
+                            )
+                        }
+
+                        {
+                            (isAddingNew === false) && (
+                                <>
+                                    <AddFolderButton row centered pointer onClick={() => setIsAddingNew(true)}>
+                                        <AddIcon size={25}/>
+                                        <Spacer h={5} />
+                                            Add File
+                                    </AddFolderButton>                         
+                                </>
+                            )
+                        }
+
                     </AddFolderContainer>
 
                 </Header>
