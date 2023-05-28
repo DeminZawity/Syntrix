@@ -29,6 +29,21 @@ export const GetFolderFiles = async(FolderId) => {
 }
 
 
+export const GetFileDetail = async(FileId) => {
+
+    const response = await fetch(
+        `https://localhost:7186/GetFile/${FileId}`, GetConfig);
+
+    
+    if(response.ok){
+        const GetFilesResponse = await response.json();
+        return GetFilesResponse;
+    }else{
+        return false
+    }
+}
+
+
 export const AddingFile = async({Name, FolderId, CodeType, Description, Content, IsPublic}) => {
 
     const response = await fetch(
@@ -45,10 +60,10 @@ export const AddingFile = async({Name, FolderId, CodeType, Description, Content,
 }
 
 
-export const EditingFile = async(Id, Name, FolderId, CodeType, Description, Content, IsPublice) => {
+export const EditingFile = async(Id, Name, FolderId, CodeType, Description, Content, IsPublic) => {
 
     const response = await fetch(
-        `https://localhost:7186/EditFile/${Id}`, GetPostConfig({Id, Name, FolderId, CodeType, Description, Content, IsPublice})
+        `https://localhost:7186/EditFile/${Id}`, GetPostConfig({Id, Name, FolderId, CodeType, Description, Content, IsPublic})
         );
 
     if(response.ok){
@@ -81,7 +96,8 @@ const API = {
     GetFolderFiles,
     AddingFile,
     EditingFile,
-    DeletingFile
+    DeletingFile,
+    GetFileDetail
 }
 
 export default API;
