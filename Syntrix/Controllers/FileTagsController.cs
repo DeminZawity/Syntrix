@@ -45,13 +45,20 @@ namespace Syntrix.Controllers
             return Created("", fileTag);
         }
 
+        [HttpPost("/AddMultipleFileTag")]
+        public IActionResult AddMultipleFileTag(MultiFileTag fileTag)
+        {
+            _fileTagsRepository.AddMultipleFileTag(fileTag);
+            return Created("", fileTag);
+        }
 
 
-        [HttpDelete("DeleteFileTagById/{id}")]
+
+        [HttpPost("DeleteFileTagById/{id}")]
         public IActionResult Delete(int id)
         {
             _fileTagsRepository.DeleteFileTag(id);
-            return NoContent();
+            return Ok(id);
         }
 
 

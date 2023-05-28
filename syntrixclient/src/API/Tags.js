@@ -32,10 +32,42 @@ export const GetUserTags = async(userId) => {
 }
 
 
+export const GetFileTags = async(fileId) => {
+
+    const response = await fetch(
+        `https://localhost:7186/GetFileTags/${fileId}`, GetConfig);
+
+    
+    if(response.ok){
+        const GetUserTagsResponse = await response.json();
+        return GetUserTagsResponse;
+    }else{
+        return false
+    }
+
+}
+
+
+
 export const AddingTag = async(UserId, Name, Color) => {
 
     const response = await fetch(
         `https://localhost:7186/AddTag`, GetPostConfig({UserId, Name, Color})
+        );
+
+    if(response.ok){
+        const AddTagResponse = await response.json();
+        return AddTagResponse;
+    }else {
+        return false
+    }   
+
+}
+
+export const AddTagToFile = async(FileId, TagIds) => {
+
+    const response = await fetch(
+        `https://localhost:7186/AddMultipleFileTag`, GetPostConfig({FileId, TagIds})
         );
 
     if(response.ok){
@@ -79,12 +111,31 @@ export const DeletingTag = async(Id) => {
 
 }
 
+export const DeleteFileTag = async(Id) => {
+    
+    const response = await fetch(
+        `https://localhost:7186/api/FileTags/DeleteFileTagById/${Id}`, GetPostConfig({Id})
+        );
+
+    if(response.ok){
+        const DeleteTagResponse = await response.json();
+        return DeleteTagResponse;
+    }else {
+        return false
+    }    
+      
+
+}
+
 
 const API = {
     GetUserTags,
     AddingTag,
     EditingTag,
-    DeletingTag
+    DeletingTag,
+    AddTagToFile,
+    GetFileTags,
+    DeleteFileTag
 }
 
 export default API;
