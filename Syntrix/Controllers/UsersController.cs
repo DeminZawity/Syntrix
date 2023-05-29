@@ -40,6 +40,26 @@ namespace Syntrix.Controllers
             }
         }
 
+        [HttpGet("/GetUser/{userId}")]
+        public IActionResult GetUserById(int userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest();
+            }
+            var user = _usersRepository.GetUserById(userId);
+            if (user == null)
+            {
+                return NotFound($"{userId} Not Found!");
+            }
+            else
+            {
+                user.Password = "";
+                return Ok(user);
+            }
+
+        }
+
 
         [HttpPost("/AddUser")]
         public IActionResult AddUser(Users user)
@@ -74,7 +94,7 @@ namespace Syntrix.Controllers
         }
 
 
-        [HttpPut("/EditUser/{id}")]
+        [HttpPost("/EditUser/{id}")]
         public IActionResult UpdateUser(int id, Users user)
         {
             if (id != user.Id)
@@ -83,7 +103,7 @@ namespace Syntrix.Controllers
             }
 
             _usersRepository.UpdateUser(user);
-            return NoContent();
+            return Ok(user);
         }
 
 
