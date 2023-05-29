@@ -10,7 +10,7 @@ const initialState = {
         email:"",
         title:"",
     },
-    UserColor:"",
+    UserColor:"#0487FF",
     IsAuthenticated: false,
     CurrentTab : "Directory",
     CurrentWorkingFolder:{
@@ -51,6 +51,11 @@ const Bridge = (state = initialState, action) => {
                 ...state,
                 CurrentWorkingFile: action.payload,
                 };
+        case "SET_COLOR":
+                    return {
+                    ...state,
+                    UserColor: action.payload,
+                    };
         default:
             return state;
     }

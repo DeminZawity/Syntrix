@@ -63,7 +63,7 @@ namespace Syntrix.Repositories
 
         /*------------------Update User----------------------*/
 
-        public void UpdateUser(Users users)
+        public void UpdateUser(UsersEditView users)
         {
             using (var conn = Connection)
             {

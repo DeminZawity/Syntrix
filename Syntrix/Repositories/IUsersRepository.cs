@@ -7,7 +7,7 @@ namespace Syntrix.Repositories
         void AddUser(Users users);
         Users GetUserById(int userId);
         bool isEmailAvailable(string Email);
-        void UpdateUser(Users users);
+        void UpdateUser(UsersEditView users);
         Users ValidateUser(string email);
     }
 }
