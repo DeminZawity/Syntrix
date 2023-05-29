@@ -125,5 +125,45 @@ namespace Syntrix.Repositories
             }
         }
 
+        /*------------------Get User by Id----------------------*/
+
+
+        public Users GetUserById(int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT * from [dbo].[Users]
+                                        WHERE Id = @UserId";
+
+                    DbUtils.AddParameter(cmd, "@UserId", userId);
+                    var reader = cmd.ExecuteReader();
+                    Users user = null;
+                    while (reader.Read())
+                    {
+                        if (user == null)
+                        {
+                            user = new Users()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                Email = DbUtils.GetString(reader, "Email"),
+                                Password = DbUtils.GetString(reader, "Password"),
+                                Title = DbUtils.GetString(reader, "Title"),
+                            };
+                        }
+                    }
+                    reader.Close();
+                    return user;
+
+                }
+            }
+        }
     }
+
+
+
 }
