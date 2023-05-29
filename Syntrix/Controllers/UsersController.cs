@@ -95,7 +95,7 @@ namespace Syntrix.Controllers
 
 
         [HttpPost("/EditUser/{id}")]
-        public IActionResult UpdateUser(int id, Users user)
+        public IActionResult UpdateUser(int id, UsersEditView user)
         {
             if (id != user.Id)
             {

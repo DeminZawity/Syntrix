@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {  useNavigate } from "react-router-dom";
 import TransparentLogo from "../UI/Images/TransparentLogo.png";
 import { Container, Hover, Spacer,   } from "../UI/Models";
+import { LogoSVG } from "../UI/Icons";
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from 'react'
 
@@ -9,7 +10,7 @@ export function NavBar() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const ActiveTab = useSelector((state) => state.CurrentTab)
-
+    const ColorInfo = useSelector((state) => state.UserColor)
     const UpdateTab = (tab) => {
         dispatch({type : "UPDATE_TAB", payload : tab})
     }
@@ -25,14 +26,15 @@ export function NavBar() {
     return(
         <NavContainer row>
             <LogoContainer justifyStart>
-                <LogoPic src={TransparentLogo} alt="Logo" />
+                {/* <LogoPic src={TransparentLogo} alt="Logo" /> */}
+                <LogoSVG size={180} color={ColorInfo}/>
             </LogoContainer>
             <NavLinksContainer row>
                 {
                     Tabs.map((obj) => (
                         <NavLink pointer centered column onClick={() => HandleTabChange(obj)}>
                             {obj}
-                            <Active on={ActiveTab == obj}/>
+                            <Active on={ActiveTab == obj} color={ColorInfo}/>
                         </NavLink>
                     ))
                 }
@@ -102,10 +104,10 @@ border-radius:100px;
 background-color: transparent;
 margin-top:5%;
 
-    ${({on}) => 
-    on && 
+    ${({on, color}) => 
+    on && color &&
     `
-    background-color: #0487FF;
+    background-color: ${color};
     `
     }
 `;

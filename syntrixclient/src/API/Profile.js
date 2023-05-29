@@ -28,8 +28,24 @@ export const GetUserById = async(UserId) => {
     }
 }
 
+export const EditingUser = async(Id, FirstName, LastName, Email, Title) => {
+
+    const response = await fetch(
+        `https://localhost:7186/EditUser/${Id}`, GetPostConfig({Id, FirstName, LastName, Email, Title})
+        );
+
+    if(response.ok){
+        const EditUserResponse = await response.json();
+        return EditUserResponse;
+    }else {
+        return false
+    }    
+}
+
+
 const API = {
-    GetUserById
+    GetUserById,
+    EditingUser
 }
 
 export default API;

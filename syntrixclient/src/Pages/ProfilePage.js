@@ -1,75 +1,236 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
-import { GetUserById } from "../API/Profile";
+import { GetUserById, EditingUser } from "../API/Profile";
 import { Screen, Container, Hover, Spacer } from "../UI/Models";
 import { Input } from "../Components/InputField";
+import { HexColorPicker } from "react-colorful";
 
 export function ProfilePage() {
     const UserInfo = useSelector((state) => state.User)
+    const ColorInfo = useSelector((state) => state.UserColor)
+    const dispatch = useDispatch()
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [title, setTitle] = useState(null)
+    const [isUpdatingFirst, setIsUpdatingFirst] = useState(false)
+    const [isUpdatingLast, setIsUpdatingLast] = useState(false)
+    const [isUpdatingEmail, setIsUpdatingEmail] = useState(false)
+    const [isUpdatingTitle, setIsUpdatingTitle] = useState(false)
+    const [ currentColor, setCurrentColor] = useState(ColorInfo !== null ? ColorInfo :"#FFF")
+    const [isSettingColor, setIsSettingColor] = useState(false)
+    const colorPickerREF = useRef(null);
+
+
+    const GetUserInformation = async () => {
+        let UserData = await GetUserById(UserInfo.id);
+        setFirstName(UserData.firstName)
+        setLastName(UserData.lastName)
+        setEmail(UserData.email)
+        setTitle(UserData.title)
+    }
+
+    const UpdateAppColor = () => {
+        dispatch({type : "SET_COLOR", payload : currentColor})
+    } 
+
+
+
+    const UpdateUser = async () => {
+        let UpdateUserData = await EditingUser(UserInfo.id, firstName, lastName, email, title);
+
+        if(UpdateUserData !== false){
+            setIsUpdatingFirst(false)
+            setIsUpdatingLast(false)
+            setIsUpdatingEmail(false)
+            setIsUpdatingTitle(false)
+            toast.success(`User Profile updated!`)
+            GetUserInformation()
+        }
+    }
+
+
+    const saveCustomColor = () => {
+        setIsSettingColor(false);
+        UpdateAppColor();
+    }
+
+
+
+    useEffect(() => {
+        GetUserInformation()
+    },[])
+
 
 
     return(
         <>
+                                    <Toaster
+                position="top-right"
+                reverseOrder={false}
+            />
             <Screen centered>
                 <ProfileContainer>
                     <PHeader row>
                         <CharContainer centered>
-                            <Char centered>D</Char>
+                            <Char centered>{firstName?.charAt(0)}</Char>
                         </CharContainer>
                         <TitleContainer column>
-                            <TName alignEnd> Demin Zawity</TName>
-                            <TTile>React Developer</TTile>
+                            <TName alignEnd>{firstName} {lastName}</TName>
+                            <TTile>{title}</TTile>
                         </TitleContainer>
                     </PHeader>
                     <PCard centered>
                         <CenteringDetails column>
                             <CardDetail row>
-                                <DetailContainer column>
-                                    <CDHeader alignEnd>First Name</CDHeader>
-                                    <CDName alignEnd>Demin</CDName>
-                                </DetailContainer>
-                                <EditButtonContainer centered>
-                                    <EditButton centered>
-                                        Edit
-                                    </EditButton>
-                                </EditButtonContainer>
+                                {
+                                    isUpdatingFirst && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>First Name</CDHeader>
+                                            <CDinput value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                                        </DetailContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingFirst === false) && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>First Name</CDHeader>
+                                            <CDName alignEnd>{firstName}</CDName>
+                                        </DetailContainer>
+                                    )
+                                }
+                                                                {
+                                    isUpdatingFirst && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => UpdateUser()}>
+                                                Save
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingFirst === false) && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => setIsUpdatingFirst(true)}>
+                                                Edit
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
                             </CardDetail>
                             <CardDetail row>
-                                <DetailContainer column>
-                                    <CDHeader alignEnd>Last Name</CDHeader>
-                                    <CDName alignEnd>Zawity</CDName>
-                                </DetailContainer>
-                                <EditButtonContainer centered>
-                                    <EditButton centered>
-                                        Edit
-                                    </EditButton>
-                                </EditButtonContainer>
+                            {
+                                    isUpdatingLast && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Last Name</CDHeader>
+                                            <CDinput value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                                        </DetailContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingLast === false) && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Last Name</CDHeader>
+                                            <CDName alignEnd>{lastName}</CDName>
+                                        </DetailContainer>
+                                    )
+                                }
+                                                                {
+                                    isUpdatingLast && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => UpdateUser()}>
+                                                Save
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingLast === false) && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => setIsUpdatingLast(true)}>
+                                                Edit
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
                             </CardDetail>
                             <CardDetail row>
-                                <DetailContainer column>
-                                    <CDHeader alignEnd>Title</CDHeader>
-                                    <CDName alignEnd>React Developer</CDName>
-                                </DetailContainer>
-                                <EditButtonContainer centered>
-                                    <EditButton centered>
-                                        Edit
-                                    </EditButton>
-                                </EditButtonContainer>
+
+                            {
+                                    isUpdatingTitle && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Title</CDHeader>
+                                            <CDinput value={title} onChange={(e) => setTitle(e.target.value)}/>
+                                        </DetailContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingTitle === false) && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Title</CDHeader>
+                                            <CDName alignEnd>{title}</CDName>
+                                        </DetailContainer>
+                                    )
+                                }
+                                                                {
+                                    isUpdatingTitle && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => UpdateUser()}>
+                                                Save
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingTitle === false) && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => setIsUpdatingTitle(true)}>
+                                                Edit
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
                             </CardDetail>
                             <CardDetail row>
-                                <DetailContainer column>
-                                    <CDHeader alignEnd>Email</CDHeader>
-                                    <CDName alignEnd>Demin.Zawity@gmail.com</CDName>
-                                </DetailContainer>
-                                <EditButtonContainer centered>
-                                    <EditButton centered>
-                                        Edit
-                                    </EditButton>
-                                </EditButtonContainer>
+
+                            {
+                                    isUpdatingEmail && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Email</CDHeader>
+                                            <CDinput value={email} onChange={(e) => setEmail(e.target.value)}/>
+                                        </DetailContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingEmail === false) && (
+                                        <DetailContainer column>
+                                            <CDHeader alignEnd>Email</CDHeader>
+                                            <CDName alignEnd>{email}</CDName>
+                                        </DetailContainer>
+                                    )
+                                }
+                                                                {
+                                    isUpdatingEmail && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => UpdateUser()}>
+                                                Save
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
+                                {
+                                    (isUpdatingEmail === false) && (
+                                        <EditButtonContainer centered>
+                                            <EditButton pointer centered onClick={() => setIsUpdatingEmail(true)}>
+                                                Edit
+                                            </EditButton>
+                                        </EditButtonContainer>
+                                    )
+                                }
                             </CardDetail>
                         </CenteringDetails>
                     </PCard>
@@ -80,13 +241,30 @@ export function ProfilePage() {
                                     App Theme Color
                                 </PFTitle>
                                 <PFColorDiv alignEnd>
-                                    <Color></Color>
+                                    <Color color={currentColor}/>
+                                    {
+                                        isSettingColor && (
+                                            <HexColorContainer ref={colorPickerREF}>
+                                                <HexColorPicker color={currentColor} onChange={setCurrentColor}/>
+                                            </HexColorContainer>
+                                        )
+                                    }
                                 </PFColorDiv>
                             </PFDetail>
                             <EditButtonContainer centered>
-                                    <EditButton centered>
-                                        Edit
-                                    </EditButton>
+                                    {
+                                        isSettingColor ? (
+                                        <EditButton pointer centered onClick={() => saveCustomColor()}>
+                                            Save
+                                        </EditButton>
+                                        ) : (
+                                            <EditButton pointer centered onClick={() => setIsSettingColor(true)}>
+                                                Edit
+                                            </EditButton>
+
+                                        )
+                                    }
+
                                 </EditButtonContainer>
                         </PFCard>
                     </PFooter>
@@ -95,7 +273,13 @@ export function ProfilePage() {
         </>
     );
 }
-
+const HexColorContainer = styled(Container)`
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    z-index: 9;
+    margin-left: 25px;
+`;
 const ProfileContainer = styled(Container)`
     height: 90%;
     width: 35%;
@@ -212,4 +396,26 @@ const Color = styled(Container)`
     border-radius: 100%;
     height: 50px;
     width: 50px;
+
+    ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+`;
+
+
+const CDinput = styled.input`
+    height: 40px;
+    margin-top: 10px;
+    border-radius: 3px;
+    background-color: #525252;
+    outline:none;
+    border:none;
+    color: white;
+    font-family:"Gilroy";
+    font-size: 22px;
 `;
