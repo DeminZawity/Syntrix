@@ -177,15 +177,15 @@ export const EditIcon = (props) => (
   >
     <path
       fill="none"
-      stroke="#0487FF"
+      stroke={props.color}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={32}
       d="M384 224v184a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V168a40 40 0 0 1 40-40h167.48"
     />
     <path
-      stroke="#0487FF"
-      fill="#0487FF"
+      stroke= {props.color}
+      fill= {props.color}
       d="M459.94 53.25a16.06 16.06 0 0 0-23.22-.56L424.35 65a8 8 0 0 0 0 11.31l11.34 11.32a8 8 0 0 0 11.34 0l12.06-12c6.1-6.09 6.67-16.01.85-22.38zM399.34 90 218.82 270.2a9 9 0 0 0-2.31 3.93L208.16 299a3.91 3.91 0 0 0 4.86 4.86l24.85-8.35a9 9 0 0 0 3.93-2.31L422 112.66a9 9 0 0 0 0-12.66l-9.95-10a9 9 0 0 0-12.71 0z"
     />
   </svg>
@@ -200,7 +200,7 @@ export const BookmarkIcon = (props) => (
   >
     <path
       fill={props.fillColor}
-      stroke="#0487FF"
+      stroke={props.color}
       strokeLinejoin="round"
       strokeWidth={32}
       d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z"

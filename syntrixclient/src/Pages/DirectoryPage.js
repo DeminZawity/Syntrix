@@ -15,6 +15,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { AddingBookmark } from "../API/Bookmarks";
 import { DeletingBookmark } from "../API/Bookmarks";
 import {XIcon} from "../UI/Icons"
+import { getContrastColor } from "../Utilities/Color";
 
 
 export function DirectoryPage() {
@@ -25,6 +26,7 @@ export function DirectoryPage() {
     const [isUpdating,setIsUpdating] = useState(false)
     const [isAddingNew,setIsAddingNew] = useState(false)
     const [newFolderName,setNewFolderName] = useState(null)
+    const ColorInfo = useSelector((state) => state.UserColor)
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -136,7 +138,7 @@ export function DirectoryPage() {
                             isUpdating && (
                                 <NewFolderContainer alignEnd justifyEnd row>
                                     <IconContainer row centered pointer onClick={() => setIsUpdating(false)}>
-                                        <XIcon size={32} color={"white"} />`    `
+                                        <XIcon size={32} color={"white"} />
                                     </IconContainer>
                                     <Input isSmall value={updateFolderName} onChange={(e) => setUpdateFolderName(e)} />
                                 
@@ -147,8 +149,8 @@ export function DirectoryPage() {
                         {
                             isAddingNew && (
                                 <>
-                                <AddFolderButton row centered pointer onClick={() => AddFolder()}>
-                                    <AddIcon size={30}/>
+                                <AddFolderButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => AddFolder()}>
+                                    <AddIcon size={25}/>
                                     <Spacer h={5}/>
                                     Create
                                 </AddFolderButton>
@@ -158,8 +160,8 @@ export function DirectoryPage() {
                         {
                             isUpdating && (
                                 <>
-                                    <AddFolderButton row centered pointer onClick={() => UpdateFolder()}>
-                                        <AddIcon size={30}/>
+                                    <AddFolderButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => UpdateFolder()}>
+                                        <AddIcon size={25}/>
                                         <Spacer h={5}/>
                                         Update
                                     </AddFolderButton>
@@ -169,8 +171,8 @@ export function DirectoryPage() {
                          {
                             (isAddingNew === false && isUpdating === false) && (
                                 <>
-                                    <AddFolderButton row centered pointer onClick={() => setIsAddingNew(true)}>
-                                        <AddIcon size={30}/>
+                                    <AddFolderButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => setIsAddingNew(true)}>
+                                        <AddIcon size={25}/>
                                         <Spacer h={5}/>
                                         Add Folder
                                     </AddFolderButton>
@@ -247,8 +249,6 @@ const AddFolderButton = styled(Container)`
 height: 3vh;
 width: 8vw;
 font-size: 16px;
-background-color: #0487FF;
-border: 1px solid #0487FF;
 border-radius: 5px;
 transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 position:absolute;
@@ -258,4 +258,21 @@ bottom:10px;
 &:hover {
     transform: scale(1.1);
   }
+
+
+  ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;

@@ -11,6 +11,7 @@ import { useRef } from "react";
 export function Folder (props) {
     const [options, setOption] = useState(false)
     const folderRef = useRef(null);
+    const ColorInfo = useSelector((state) => state.UserColor)
 
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export function Folder (props) {
         
         <FolderContainer row pointer onClick={() => props.onClick()}>
             <CardHeader centered>
-                <FolderIcon size={40} color={"#0487FF"}/>
+                <FolderIcon size={40} color={ColorInfo}/>
             </CardHeader>
             <CardBody column centered>
                 <BodyHeader justifyStart>{props.data.name}</BodyHeader>
@@ -56,7 +57,7 @@ export function Folder (props) {
 
                     <Option row onClick={() => props.onEditFolder(props.data)}>
                         <IconContainer centered>
-                            <EditIcon size={18}/>
+                            <EditIcon size={18} color={ColorInfo}/>
                         </IconContainer>
                         <OptionText>
                             Edit
@@ -67,7 +68,7 @@ export function Folder (props) {
         
                     <Option row onClick={() => props.onDeleteFolder(props.data)}>
                         <IconContainer centered>
-                            <DeleteIcon size={18} color={"#0487FF"}/>
+                            <DeleteIcon size={18} color={ColorInfo}/>
                         </IconContainer>
                         <OptionText>
                             Delete
@@ -78,7 +79,7 @@ export function Folder (props) {
         
                     <Option row onClick={() => props.onBookmarkFolder(props.data)}>
                         <IconContainer centered>
-                            <BookmarkIcon size={18} fillColor={props.data.isBookmarked ? "#0487FF" : "none"} />
+                            <BookmarkIcon size={18} color={ColorInfo} fillColor={props.data.isBookmarked ? ColorInfo : "none"} />
                         </IconContainer>
                         <OptionText>
                             {props.data.isBookmarked ? 'Remove' : 'Bookmark'}

@@ -16,6 +16,7 @@ import {AddTagToFile,GetFileTags,DeleteFileTag} from "../API/Tags"
 import { ExistingTag } from "../Components/ExistingTag";
 import { GetFolderFiles, GetFileDetail, EditingFile } from "../API/Files";
 import Dropdown from "../Components/Dropdown";
+import { getContrastColor } from "../Utilities/Color";
 
 
 
@@ -23,6 +24,7 @@ export function FileDetailsPage() {
     const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
     const GetCurrentFolder = useSelector((state) => state.CurrentWorkingFolder)
     const UserInfo = useSelector((state) => state.User)
+    const ColorInfo = useSelector((state) => state.UserColor)
     const [isAddModalOn, setIsAddModalOn] = useState(false)
     const [tags, setTags] = useState(null)
     const [fileTags,setFileTags] = useState([])
@@ -215,8 +217,8 @@ export function FileDetailsPage() {
                                     {fileTags != null  && fileTags.map((obj) => (
                                         <ExistingTag data={obj} onDelete={(e) => removeUserFileTag(e)}/>
                                     ))}
-                                    <AddTag centered pointer onClick={() =>setIsAddModalOn(true)}>
-                                        <AddIcon size={32} color={'white'} />
+                                    <AddTag centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() =>setIsAddModalOn(true)}>
+                                        <AddIcon size={32} />
                                 </AddTag>
                                 </TagsComp>
                                 <Spacer v={40}/>
@@ -224,7 +226,7 @@ export function FileDetailsPage() {
                             </TInput>
                         </TagsContainer>
                         <SaveButtonContainer  pointer onClick={() => saveChanges()}>
-                            <SaveButton centered> Save</SaveButton>
+                            <SaveButton textColor={getContrastColor(ColorInfo)} color={ColorInfo} centered> Save</SaveButton>
                         </SaveButtonContainer>
                     </DetailsContainer>
                 </Body>
@@ -439,13 +441,27 @@ const TgTrash = styled(Container)`
 `;
 
 const AddTag = styled(Container)`
-    border: 1px solid #0682F4;
     height: 30px;
     width: 30px;
     font-size: 17px;
     border-radius: 3px;
-    background-color: #0682F4;
     margin-bottom:-15px;
+
+ ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;
 
 const SaveButton = styled(Container)`
@@ -455,6 +471,22 @@ const SaveButton = styled(Container)`
     height: 50px;
     font-size: 20px;
     margin-right: 40px;
+
+     ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;
 
 const ATContainer = styled(Container)`

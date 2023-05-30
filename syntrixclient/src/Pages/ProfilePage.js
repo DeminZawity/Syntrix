@@ -77,7 +77,7 @@ export function ProfilePage() {
                 <ProfileContainer>
                     <PHeader row>
                         <CharContainer centered>
-                            <Char centered>{firstName?.charAt(0)}</Char>
+                            <Char centered textColor={ColorInfo}>{firstName?.charAt(0)}</Char>
                         </CharContainer>
                         <TitleContainer column>
                             <TName alignEnd>{firstName} {lastName}</TName>
@@ -324,7 +324,12 @@ const Char = styled(Container)`
     font-size: 40px;
     font-family:"Gilroy-Bold";
     background-color: #333333;
-    color: #0487FF;
+    ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;
 const TitleContainer = styled(Container)`
     height: 100%;
