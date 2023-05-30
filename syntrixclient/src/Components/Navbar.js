@@ -15,6 +15,13 @@ export function NavBar() {
         dispatch({type : "UPDATE_TAB", payload : tab})
     }
 
+
+    const ClearingState = () => {
+        dispatch({type : "RESET_STATE"})
+        navigate("/LandingPage")
+    }
+
+
     
     const Tabs = ["Directory","Bookmarks","Resources","Community","Tags","Profile"]
 
@@ -40,7 +47,7 @@ export function NavBar() {
                 }
             </NavLinksContainer>
             <LogoutContainer centered>
-                <LogoutButton centered pointer>
+                <LogoutButton centered pointer onClick={() => ClearingState()}>
                     Logout
                 </LogoutButton>
             </LogoutContainer>

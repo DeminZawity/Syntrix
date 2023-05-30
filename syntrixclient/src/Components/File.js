@@ -10,6 +10,7 @@ import { useRef } from "react";
 export function File (props) {
     const [options, setOption] = useState(false)
     const fileRef = useRef(null);
+    const ColorInfo = useSelector((state) => state.UserColor)
 
     useEffect(() => {
         // Add event listener to handle click outside the component
@@ -36,7 +37,7 @@ export function File (props) {
     return(
         <FolderContainer row pointer onClick={() => props.onClick()}>
             <CardHeader centered>
-                <FileIcon size={40} color={"#0487FF"}/>
+                <FileIcon size={40} color={ColorInfo}/>
             </CardHeader>
             <CardBody column centered>
                 <BodyHeader justifyStart>{props.data.name}</BodyHeader>
@@ -45,22 +46,11 @@ export function File (props) {
             <CardFooter centered onClick={(e) => handleClick(e)}>
                 <OptionsIcon color={"#989898"} />
                 {options && 
-                    <FOContainer column ref={fileRef}>
-
-                    <Option row onClick={() => props.onEditFile(props.data)}>
-                        <IconContainer centered>
-                            <EditIcon size={18}/>
-                        </IconContainer>
-                        <OptionText>
-                            Edit
-                        </OptionText>
-                    </Option>
-        
-                    <Line></Line>
+                <FOContainer column ref={fileRef}>
         
                     <Option row onClick={() => props.onDeleteFile(props.data)}>
                         <IconContainer centered>
-                            <DeleteIcon size={18} color={"#0487FF"}/>
+                            <DeleteIcon size={18} color={ColorInfo}/>
                         </IconContainer>
                         <OptionText>
                             Delete
@@ -107,6 +97,7 @@ const CardFooter = styled(Container)`
 const BodyHeader = styled(Container)`
     width: 100%;
     font-size: 15px;
+    margin-top: 5px;
 `;
 
 const BodyFooter = styled(Container)`
@@ -115,7 +106,7 @@ const BodyFooter = styled(Container)`
 `;
 
 const FOContainer = styled(Container)`
-    height: 6vh;
+    height: 3vh;
     width: 150px;
     position: absolute;
     background-color: #292929;

@@ -11,6 +11,7 @@ import { EditIcon, DeleteIcon } from "../UI/Icons";
 export function TagPg (props) {
     const [options, setOption] = useState(false)
     const tagRef = useRef(null);
+    const ColorInfo = useSelector((state) => state.UserColor)
 
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export function TagPg (props) {
 
                     <Option row onClick={() => props.onEditTag(props.data)}>
                         <IconContainer centered>
-                            <EditIcon size={18}/>
+                            <EditIcon size={18} color={ColorInfo}/>
                         </IconContainer>
                         <OptionText>
                             Edit
@@ -63,7 +64,7 @@ export function TagPg (props) {
         
                     <Option row onClick={() => props.onDeleteTag(props.data)}>
                         <IconContainer centered>
-                            <DeleteIcon size={18} color={"#0487FF"}/>
+                            <DeleteIcon size={18} color={ColorInfo}/>
                         </IconContainer>
                         <OptionText>
                             Delete

@@ -56,6 +56,32 @@ const Bridge = (state = initialState, action) => {
                     ...state,
                     UserColor: action.payload,
                     };
+        case "RESET_STATE":
+                    return {
+                    ...state,
+                    User:{
+                        firstName:"",
+                        lastName:"",
+                        email:"",
+                        title:"",
+                    },
+                    UserColor:"#0487FF",
+                    IsAuthenticated: false,
+                    CurrentTab : "Directory",
+                    CurrentWorkingFolder:{
+                        FolderId: null,
+                        FolderName: null,
+                    },
+                    CurrentWorkingFile:{
+                        FileId: null,
+                        FileName: null,
+                        FileFolderId: null,
+                        FileCodeType: null,
+                        FileDescription: null,
+                        FileContent: null,
+                        FileIsPublic: null,
+                    }
+                    };
         default:
             return state;
     }

@@ -10,6 +10,7 @@ import { File } from "../Components/File";
 import { GetFolderFiles } from "../API/Files";
 import { DeletingFile, AddingFile } from "../API/Files";
 import { Input } from "../Components/InputField";
+import { getContrastColor } from "../Utilities/Color";
 
 
 export function FilesPage() {
@@ -19,6 +20,7 @@ export function FilesPage() {
     const [isAddingNew, setIsAddingNew] = useState(false);
     const FilesInfo = useSelector((state) => state.CurrentWorkingFile)
     const FolderInfo = useSelector((state) => state.CurrentWorkingFolder)
+    const ColorInfo = useSelector((state) => state.UserColor)
 
     const [newFileName,setNewFileName] = useState(null)
 
@@ -113,7 +115,7 @@ export function FilesPage() {
                         {
                             isAddingNew && (
                                 <>
-                                    <AddFolderButton row centered pointer onClick={() => AddFile()}>
+                                    <AddFolderButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => AddFile()}>
                                         <Spacer h={5} />
                                             Create File
                                     </AddFolderButton>
@@ -124,7 +126,7 @@ export function FilesPage() {
                         {
                             (isAddingNew === false) && (
                                 <>
-                                    <AddFolderButton row centered pointer onClick={() => setIsAddingNew(true)}>
+                                    <AddFolderButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => setIsAddingNew(true)}>
                                         <AddIcon size={25}/>
                                         <Spacer h={5} />
                                             Add File
@@ -141,7 +143,7 @@ export function FilesPage() {
                         files.map((obj) => (
                             <>
                                 <File data={obj} onClick={() => OpenFile(obj)}
-                                onEditFile={(e) => OpenFile(obj)} onDeleteFile = {(e) => DeleteFile(e.id)}/>
+                                onDeleteFile = {(e) => DeleteFile(e.id)}/>
                             </>
                         ))
                     }
@@ -214,6 +216,22 @@ bottom:10px;
 &:hover {
     transform: scale(1.1);
   }
+
+  ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;
 
 const FolderName = styled(Container)`

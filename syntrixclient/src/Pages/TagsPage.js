@@ -12,11 +12,13 @@ import { Input } from "../Components/InputField";
 import { HexColorPicker } from "react-colorful";
 import { Fade } from "@mui/material";
 import { EditingTag } from "../API/Tags";
+import { getContrastColor } from "../Utilities/Color";
 
 
 export function TagsPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const ColorInfo = useSelector((state) => state.UserColor)
     const colorPickerREF = useRef(null);
     const [tags, setTags] = useState([]);
     const [isUpdating,setIsUpdating] = useState(false)
@@ -170,8 +172,8 @@ export function TagsPage() {
                             {
                                 isAddingNew && (
                                     <>
-                                        <AddTagButton row centered pointer onClick={() => AddTag()}>
-                                            <AddIcon size={30}/>
+                                        <AddTagButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => AddTag()}>
+                                            <AddIcon size={25}/>
                                             <Spacer h={5}/>
                                             Create
                                         </AddTagButton>
@@ -182,8 +184,8 @@ export function TagsPage() {
                             {
                                 isUpdating && (
                                     <>
-                                        <AddTagButton row centered pointer onClick={() => UpdateTag()}>
-                                            <AddIcon size={30}/>
+                                        <AddTagButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => UpdateTag()}>
+                                            <AddIcon size={25}/>
                                             <Spacer h={5}/>
                                             Update
                                         </AddTagButton>
@@ -193,8 +195,8 @@ export function TagsPage() {
                             {
                                 (isAddingNew === false && isUpdating === false) && (
                                     <>
-                                        <AddTagButton row centered pointer  onClick={() => setIsAddingNew(true)}>
-                                            <AddIcon size={30}/>
+                                        <AddTagButton row centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() => setIsAddingNew(true)}>
+                                            <AddIcon size={25}/>
                                             <Spacer h={5}/>
                                             Add Tag
                                         </AddTagButton>
@@ -246,8 +248,6 @@ const AddTagButton = styled(Container)`
 height: 3vh;
 width: 8vw;
 font-size: 16px;
-background-color: #0487FF;
-border: 1px solid #0487FF;
 border-radius: 5px;
 transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 position:absolute;
@@ -257,6 +257,22 @@ bottom:10px;
 &:hover {
     transform: scale(1.1);
   }
+
+  ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;
 
 const TagCountHeader = styled(Container)`

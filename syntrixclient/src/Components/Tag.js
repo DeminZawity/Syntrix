@@ -7,13 +7,15 @@ import { Screen, Container, Hover, Spacer } from "../UI/Models";
 import { DeleteIcon } from "../UI/Icons";
 
 export function Tag(props) {
+    const ColorInfo = useSelector((state) => state.UserColor)
+
 
     return(
         <>
             <Tg centered>{props.data.name}</Tg>
             <Spacer h={8}/>
             <TgTrash centered>
-                <DeleteIcon size={25} color={"white"}/>
+                <DeleteIcon size={25} color={ColorInfo}/>
             </TgTrash>
             <Spacer h={8}/>
         </>
