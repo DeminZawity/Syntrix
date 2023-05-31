@@ -36,6 +36,22 @@ namespace Syntrix.Controllers
         }
 
 
+        [HttpGet("/GetBookmarkedFolders/{userId}")]
+        public IActionResult GetFoldersByUserIdThatAreBookmarked(int userId)
+        {
+            if (userId == null)
+            {
+                return BadRequest();
+            }
+            var folder = _foldersRepository.GetFoldersByUserIdThatAreBookmarked(userId);
+            if (folder == null)
+            {
+                return NotFound($"{userId} Not Found!");
+            }
+            return Ok(folder);
+
+        }
+
 
         [HttpPost("/AddFolder")]
         public IActionResult AddFolder(FolderAdd folder)

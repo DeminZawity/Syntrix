@@ -54,7 +54,7 @@ namespace Syntrix.Repositories
                             Id = DbUtils.GetInt(reader, "FolderId"),
                             Name = DbUtils.GetString(reader, "FolderName"),
                             UserId = DbUtils.GetInt(reader, "FolderUserId"),
-                            FileCount = DbUtils.GetInt(reader,"FileCount"),
+                            FileCount = DbUtils.GetInt(reader, "FileCount"),
                             isBookmarked = DbUtils.GetInt(reader, "isBookmarked")
                         };
                         folderList.Add(folder);
@@ -64,6 +64,63 @@ namespace Syntrix.Repositories
                 }
             }
         }
+
+
+        /*------------------Get Folders by UserId that are Bookmarked----------------------*/
+
+        public List<DirectoryFolder> GetFoldersByUserIdThatAreBookmarked(int userId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
+                                            F.[Id] AS FolderId,
+                                            F.[Name] AS FolderName,
+                                            F.[UserId] AS FolderUserId,
+                                            COUNT(fi.FolderId) AS FileCount,
+                                            CASE WHEN B.FolderId IS NOT NULL THEN 1 ELSE 0 END AS IsBookmarked
+                                        FROM 
+                                            [Syntrix].[dbo].[Folders] F
+                                        LEFT JOIN 
+                                            [Syntrix].[dbo].[Files] fi ON F.[Id] = fi.[FolderId]
+                                        LEFT JOIN 
+                                            [Syntrix].[dbo].[Bookmarks] B ON F.[Id] = B.[FolderId] AND F.[UserId] = B.[UserId]
+                                        WHERE 
+                                            F.[UserId] = @UserId
+                                        GROUP BY
+                                            F.[Id],
+                                            F.[Name],
+                                            F.[UserId],
+                                            B.FolderId
+                                        HAVING 
+                                            CASE WHEN B.FolderId IS NOT NULL THEN 1 ELSE 0 END = 1";
+
+                    DbUtils.AddParameter(cmd, "@UserId", userId);
+                    var reader = cmd.ExecuteReader();
+
+
+
+                    List<DirectoryFolder> folderList = new List<DirectoryFolder>();
+                    while (reader.Read())
+                    {
+                        var folder = new DirectoryFolder()
+                        {
+                            Id = DbUtils.GetInt(reader, "FolderId"),
+                            Name = DbUtils.GetString(reader, "FolderName"),
+                            UserId = DbUtils.GetInt(reader, "FolderUserId"),
+                            FileCount = DbUtils.GetInt(reader, "FileCount"),
+                            isBookmarked = DbUtils.GetInt(reader, "isBookmarked")
+                        };
+                        folderList.Add(folder);
+                    }
+                    reader.Close();
+                    return folderList;
+                }
+            }
+        }
+
 
 
 

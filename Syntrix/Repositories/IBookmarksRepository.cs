@@ -6,6 +6,6 @@ namespace Syntrix.Repositories
     {
         void AddBookmark(Bookmarks bookmark);
         void DeleteBookmark(int id);
-        List<Bookmarks> GetBookmarksByUserId(int userId);
+        List<BookmarksDTO> GetBookmarksByUserId(int userId);
     }
 }
