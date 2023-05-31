@@ -47,7 +47,7 @@ namespace Syntrix.Controllers
 
 
 
-        [HttpPut("/EditResource/{id}")]
+        [HttpPost("/EditResource/{id}")]
         public IActionResult UpdateResource(int id, ResourcesEditView resource)
         {
             if (id != resource.Id)
@@ -56,16 +56,16 @@ namespace Syntrix.Controllers
             }
 
             _resourcesRepository.UpdateResource(resource);
-            return NoContent();
+            return Ok(resource);
         }
 
 
 
-        [HttpDelete("DeleteResourceById/{id}")]
+        [HttpPost("DeleteResourceById/{id}")]
         public IActionResult Delete(int id)
         {
             _resourcesRepository.DeleteResource(id);
-            return NoContent();
+            return Ok(id);
         }
 
 
