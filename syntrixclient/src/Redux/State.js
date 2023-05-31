@@ -25,6 +25,13 @@ const initialState = {
         FileDescription: null,
         FileContent: null,
         FileIsPublic: null,
+    },
+    CurrentWorkingResource:{
+        ResourceId: null,
+        ResourceUserId: null,
+        ResourceName: null,
+        ResourceDescription: null,
+        ResourceLink: null,
     }
 }
 
@@ -56,6 +63,11 @@ const Bridge = (state = initialState, action) => {
                     ...state,
                     UserColor: action.payload,
                     };
+        case "SET_RESOURCE":
+                    return {
+                    ...state,
+                    CurrentWorkingResource: action.payload,
+                    };        
         case "RESET_STATE":
                     return {
                     ...state,

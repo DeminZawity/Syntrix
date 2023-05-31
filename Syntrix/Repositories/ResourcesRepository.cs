@@ -27,8 +27,7 @@ namespace Syntrix.Repositories
 		                                    [Resources].[UserId] AS ResourcesUserId,
 		                                    [Resources].[Name] AS ResourcesName,
 		                                    [Resources].[Description] AS ResourcesDescription,
-		                                    [Resources].[Link] AS ResourcesLink,
-		                                    [Resources].[IsPublic] AS ResourcesIsPublic
+		                                    [Resources].[Link] AS ResourcesLink
                                         FROM [Syntrix].[dbo].[Resources]
                                         WHERE [Resources].[UserId] = @UserId";
 
@@ -45,7 +44,6 @@ namespace Syntrix.Repositories
                             Name = DbUtils.GetString(reader, "ResourcesName"),
                             Description = DbUtils.GetString(reader, "ResourcesDescription"),
                             Link = DbUtils.GetString(reader, "ResourcesLink"),
-                            IsPublic = DbUtils.GetBoolean(reader, "ResourcesIsPublic"),
                         };
                         resourcesList.Add(resource);
                     }
@@ -67,14 +65,13 @@ namespace Syntrix.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO Resources
-                        (UserId, Name, Description, Link, IsPublic)
+                        (UserId, Name, Description, Link)
                         OUTPUT INSERTED.ID
-                        VALUES (@userId, @name, @description, @link, @isPublic)";
+                        VALUES (@userId, @name, @description, @link)";
                     DbUtils.AddParameter(cmd, "@userId", resource.UserId);
                     DbUtils.AddParameter(cmd, "@name", resource.Name);
                     DbUtils.AddParameter(cmd, "@description", resource.Description);
                     DbUtils.AddParameter(cmd, "@link", resource.Link);
-                    DbUtils.AddParameter(cmd, "@isPublic", resource.IsPublic);
                     resource.Id = (int)cmd.ExecuteScalar();
                 }
             }
@@ -95,14 +92,12 @@ namespace Syntrix.Repositories
                                            SET
                                                [Name] = @Name,
                                                [Description] = @Description,
-                                               [Link] = @Link,
-                                               [IsPublic] = @IsPublic
+                                               [Link] = @Link
                                         WHERE Id = @id";
                     DbUtils.AddParameter(cmd, "@id", resource.Id);
                     DbUtils.AddParameter(cmd, "@Name", resource.Name);
                     DbUtils.AddParameter(cmd, "@Description", resource.Description);
                     DbUtils.AddParameter(cmd, "@Link", resource.Link);
-                    DbUtils.AddParameter(cmd, "@IsPublic", resource.IsPublic);
                     cmd.ExecuteNonQuery();
 
                 }
