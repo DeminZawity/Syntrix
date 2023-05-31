@@ -107,7 +107,7 @@ export function DirectoryPage() {
 
     return(
         <>
-                    <Toaster
+            <Toaster
                 position="top-right"
                 reverseOrder={false}
             />

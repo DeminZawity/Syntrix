@@ -14,6 +14,20 @@ const GetPostConfig = (body) => {
     return config
 }
 
+export const GetUserBookmarks = async(userId) => {
+
+    const response = await fetch(
+        `https://localhost:7186/GetBookmarks/${userId}`, GetConfig);
+
+    
+    if(response.ok){
+        const GetBookmarksResponse = await response.json();
+        return GetBookmarksResponse;
+    }else{
+        return false
+    }
+    
+}
 
 export const AddingBookmark = async(UserId, FolderId) => {
 
@@ -46,7 +60,8 @@ export const DeletingBookmark = async(Id) => {
 
 const API = {
     AddingBookmark,
-    DeletingBookmark
+    DeletingBookmark,
+    GetUserBookmarks
 }
 
 export default API;
