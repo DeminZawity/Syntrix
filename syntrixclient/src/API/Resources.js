@@ -29,6 +29,22 @@ export const GetResources = async(userId) => {
 
 }
 
+
+export const GetResourceDetail = async(ResourceId) => {
+
+    const response = await fetch(
+        `https://localhost:7186/GetResource/${ResourceId}`, GetConfig);
+
+    
+    if(response.ok){
+        const GetResourcesResponse = await response.json();
+        return GetResourcesResponse;
+    }else{
+        return false
+    }
+}
+
+
 export const AddingResource = async({UserId, Name, Description, Link}) => {
 
     const response = await fetch(
@@ -46,7 +62,7 @@ export const AddingResource = async({UserId, Name, Description, Link}) => {
 export const EditingResource = async(Id, Name, Description, Link) => {
 
     const response = await fetch(
-        `https://localhost:7186/EditResource/${Id}`, GetPostConfig({Name, Description, Link})
+        `https://localhost:7186/EditResource/${Id}`, GetPostConfig({Id, Name, Description, Link})
         );
 
     if(response.ok){
@@ -75,6 +91,7 @@ export const DeletingResource = async(Id) => {
 
 const API = {
     GetResources,
+    GetResourceDetail,
     AddingResource,
     EditingResource,
     DeletingResource
