@@ -6,6 +6,7 @@ import { TagsPage } from "../Pages/TagsPage";
 import { ProfilePage } from "../Pages/ProfilePage";
 import { BookmarksPage } from "../Pages/BookmarksPage";
 import { ResouresPage } from "../Pages/ResourcesPage";
+import { CommunityPage } from "../Pages/CommunityPage";
 
 export function ProtectedPages () {
 
@@ -18,6 +19,7 @@ export function ProtectedPages () {
             <Route path="/Profile" element={<ProfilePage/>}/>
             <Route path="/Bookmarks" element={<BookmarksPage/>}/>
             <Route path="/Resources" element={<ResouresPage/>}/>
+            <Route path="/Community" element={<CommunityPage/>}/>
         </Routes>
     );
 }
