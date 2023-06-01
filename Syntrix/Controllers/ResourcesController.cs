@@ -37,6 +37,22 @@ namespace Syntrix.Controllers
         }
 
 
+        [HttpGet("/GetResource/{resourceId}")]
+        public IActionResult GetResourceById(int resourceId)
+        {
+            if (resourceId == null)
+            {
+                return BadRequest();
+            }
+            var resource = _resourcesRepository.GetResourceById(resourceId);
+            if (resource == null)
+            {
+                return NotFound($"{resourceId} Not Found!");
+            }
+            return Ok(resource);
+
+        }
+
 
         [HttpPost("/AddResource")]
         public IActionResult AddResource(Resources resource)

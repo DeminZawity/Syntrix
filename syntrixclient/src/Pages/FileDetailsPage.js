@@ -125,7 +125,7 @@ export function FileDetailsPage() {
             <Fade in={isAddModalOn} style={{transitionDelay:"140ms"}}>
                 <ModalContainer>
                     <ATContainer column>
-                        <XIcon size={40} onClick={() => setIsAddModalOn(false)}/>
+                        <XIcon size={40} pointer onClick={() => setIsAddModalOn(false)}/>
                         <ATHeader centered>Add Tag</ATHeader>
                         <ATSubHeader>Select all that apply</ATSubHeader>
                         <ATBody>
@@ -141,7 +141,7 @@ export function FileDetailsPage() {
                             </ATDetail>
                         </ATBody>
                         <ATFooter centered onClick={() => saveAddTags()}>
-                            <SaveTagsButton centered>Save Tags</SaveTagsButton>
+                            <SaveTagsButton centered textColor={getContrastColor(ColorInfo)} color={ColorInfo}>Save Tags</SaveTagsButton>
                         </ATFooter>
                     </ATContainer>
                 </ModalContainer>
@@ -549,4 +549,20 @@ const SaveTagsButton = styled(Container)`
     font-size: 20px;
     border-radius: 3px;
     background-color: #0487FF;
+
+    ${({ color }) =>
+    color &&
+    `
+        background-color: ${color};
+        border: 1px solid ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+    color : ${textColor};
+    `
+    }
 `;

@@ -250,9 +250,9 @@ height: 3vh;
 width: 8vw;
 font-size: 16px;
 border-radius: 5px;
-transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 position:absolute;
 right:10px;
+transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 bottom:10px;
 
 &:hover {

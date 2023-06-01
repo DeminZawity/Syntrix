@@ -55,6 +55,50 @@ namespace Syntrix.Repositories
 
 
 
+        /*------------------Get Resource by Id----------------------*/
+
+        public Resources GetResourceById(int resourceId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT
+		                                    [Resources].[Id] AS ResourcesId,
+		                                    [Resources].[UserId] AS ResourcesUserId,
+		                                    [Resources].[Name] AS ResourcesName,
+		                                    [Resources].[Description] AS ResourcesDescription,
+		                                    [Resources].[Link] AS ResourcesLink
+                                        FROM [Syntrix].[dbo].[Resources]
+                                        WHERE [Resources].[Id] = @ResourcesId";
+
+                    DbUtils.AddParameter(cmd, "@ResourcesId", resourceId);
+                    var reader = cmd.ExecuteReader();
+                    Resources resources = null;
+                    while (reader.Read())
+                    {
+                        if (resources == null)
+                        {
+                            resources = new Resources()
+                            {
+                                Id = DbUtils.GetInt(reader, "ResourcesId"),
+                                UserId = DbUtils.GetInt(reader, "ResourcesUserId"),
+                                Name = DbUtils.GetString(reader, "ResourcesName"),
+                                Description = DbUtils.GetString(reader, "ResourcesDescription"),
+                                Link = DbUtils.GetString(reader, "ResourcesLink"),
+                            };
+                        }
+                    }
+                    reader.Close();
+                    return resources;
+
+                }
+            }
+        }
+
+
+
         /*------------------Add Resource----------------------*/
 
         public void AddResource(Resources resource)
