@@ -28,7 +28,7 @@ export function CommunityPage() {
 
     const OpenFile = (obj) => {
         UpdateFileInfo(obj)
-        navigate("/FileDetails")
+        navigate("/CommunityFileDetails")
     }
 
 
