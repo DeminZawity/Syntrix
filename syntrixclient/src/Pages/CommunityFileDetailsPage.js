@@ -17,22 +17,21 @@ import { ExistingTag } from "../Components/ExistingTag";
 import { GetFolderFiles, GetFileDetail, EditingFile } from "../API/Files";
 import Dropdown from "../Components/Dropdown";
 import { getContrastColor } from "../Utilities/Color";
+import { ExistingCommunityTag } from "../Components/ExistingCommunityTag";
 
 
 
-export function FileDetailsPage() {
+export function CommunityFileDetailsPage() {
     const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
     const GetCurrentFolder = useSelector((state) => state.CurrentWorkingFolder)
     const UserInfo = useSelector((state) => state.User)
     const ColorInfo = useSelector((state) => state.UserColor)
-    const [isAddModalOn, setIsAddModalOn] = useState(false)
     const [tags, setTags] = useState(null)
     const [fileTags,setFileTags] = useState([])
     const [fileName,setFileName] = useState("")
     const [code,setCode] = useState(null)
     const [description,setDescription] = useState(null)
     const [codeType,setCodeType] = useState(null)
-    const [isPublic,setIsPublic] = useState(true)
     const [isEditingName,setIsEditingName] = useState(false)
     const navigate = useNavigate();
 
@@ -45,7 +44,7 @@ export function FileDetailsPage() {
             setFileName(FileData.name);
             setCode(FileData.content)
             setDescription(FileData.description)
-            setIsPublic(FileData.isPublic)
+
             setCodeType(FileData.codeType)
         }
     }
@@ -68,44 +67,6 @@ export function FileDetailsPage() {
 
 
 
-    const updateSelectedTag = (value,id) => {
-        const updatedTags = tags.map((item) => item.id === id ? {...item, isSelected : value} : item)
-        setTags(updatedTags)
-    
-    }
-
-    const saveAddTags = async () => {
-    
-        const selectedTags = tags.filter((obj) => obj.isSelected === true).map((obj) => obj.id)
-
-        const UpdateTags = await AddTagToFile(GetCurrentFile.FileId,selectedTags)
-
-        if(UpdateTags !== false){
-            setIsAddModalOn(false)
-            setTags([])
-            toast.success(`Tags Updated!`)
-            GetTags()
-        }
-    }
-
-    const removeUserFileTag = async (id) => {
-        const DeleteTag = await DeleteFileTag(id);
-
-        if(DeleteTag !== false){
-            setTags([])
-            GetTags();
-        }
-    }
-
-
-    const saveChanges = async () => {
-
-        let SaveFile = await EditingFile(GetCurrentFile.FileId, fileName,GetCurrentFile.FolderId,codeType,description,code,isPublic)
-
-        if(SaveFile != false){
-            toast.success("File Saved Successfully")
-        }
-    }
 
     useEffect(() => {
         GetTags()
@@ -114,58 +75,16 @@ export function FileDetailsPage() {
 
     return(
         <>
-                            <Toaster
-                position="top-right"
-                reverseOrder={false}
-            />
         <Screen row>
         <Spacer h={200}/>
 
             <FDContainer>
-            <Fade in={isAddModalOn} style={{transitionDelay:"140ms"}}>
-                <ModalContainer>
-                    <ATContainer column>
-                        <XIcon size={40} pointer onClick={() => setIsAddModalOn(false)}/>
-                        <ATHeader centered>Add Tag</ATHeader>
-                        <ATSubHeader>Select all that apply</ATSubHeader>
-                        <ATBody>
-                            <ATDetail row>
-                                {
-                                    tags?.map((obj) => (
-                                        <Checkbox data={obj} onChange={(e) => updateSelectedTag(e,obj.id)}/>
-
-                                    ))
-                                }
-
-                                {/* <ATCheckbox type="checkbox" centered/> */}
-                            </ATDetail>
-                        </ATBody>
-                        <ATFooter centered onClick={() => saveAddTags()}>
-                            <SaveTagsButton centered textColor={getContrastColor(ColorInfo)} color={ColorInfo}>Save Tags</SaveTagsButton>
-                        </ATFooter>
-                    </ATContainer>
-                </ModalContainer>
-            </Fade>
-
- 
                 <Header row >
                     <IconContainer centered pointer>
-                        <BackIcon size={30} onClick={() => navigate(`/FilesPage`)}/>
+                        <BackIcon size={30} onClick={() => navigate(`/Community`)}/>
                     </IconContainer>
                     <Title row justifyStart alignCenter>
-                        {/* {GetCurrentFile.FileName} */}
-                        <FileNameInput isEditing={isEditingName} disabled={isEditingName != true} onChange={(e) => setFileName(e.target.value)} value={fileName} inputWidth={fileName.length * 11} />
-                        <EditIconContainer row centered pointer onClick={() => setIsEditingName(!isEditingName)}>
-                            {
-                                isEditingName ? (
-                                    <XIcon size={33} />
-
-                                ) : (
-
-                                    <EditIcon size={33} color={ColorInfo}/>
-                                )
-                            }
-                        </EditIconContainer>
+                        <FileName>{fileName}</FileName>
                     </Title>
                 </Header>
                 <Body row >
@@ -178,56 +97,43 @@ export function FileDetailsPage() {
                             <BLOCK>
                                 {
                                     (code != null || code != undefined) && (
-                                        <CodeEditor  disabled={true} onChange={(e) => setCode(e)} content={code} type={codeType}/>
+                                        <CodeEditor disabled={false} onChange={(e) => setCode(e)} content={code} type={codeType}/>
                                     )
                                 }
                             </BLOCK>
                         </CCBlock>
                     </CodeContainer>
                     <DetailsContainer column  >
-                        <DecriptionContainer column  >
-                            <DHeader justifyStart>Description</DHeader>
-                            <DInput onChange={(e) => setDescription(e.target.value)} value={description}/>
+                        <Spacer v={30}/>
+                        <DecriptionContainer column>
+                            <DHeader>Description</DHeader>
+                            <Spacer v={10}/>
+                            <DTextContainer centered>
+                                <DText>{description}</DText>
+                            </DTextContainer>
                         </DecriptionContainer>
-                        <CodeTypeContainer>
-                            <CTHeader justifyStart>Code Type
-                            </CTHeader>
-                            {/* <CTInput onChange={(e) => setCodeType(e.target.value)} value={codeType} /> */}
-                            <Spacer v={12} />
-                            <Dropdown onChange={(e) => setCodeType(e)} type={codeType} />
-                        </CodeTypeContainer>
-                        <VisabilityContainer  >
-                            <VHeader justifyStart>Visibility</VHeader>
-                            <VInput row>
-                                <VIDetail row>
-                                    <VIInput name="visibilityRadio" onChange={(e) => setIsPublic(e.target.checked)} type="radio" checked={isPublic}/>
-                                    <VIText justifyStart>Public</VIText>
-                                </VIDetail>
-                                <VIDetail row>
-                                    <VIInput name="visibilityRadio" onChange={(e) => setIsPublic(!e.target.checked)} type="radio" checked={!isPublic}/>
-                                    <VIText justifyStart>Private</VIText>
-                                </VIDetail>
-                            </VInput>
-                        </VisabilityContainer>
+                        <Spacer v={20}/>
+                        <DecriptionContainer column>
+                            <DHeader>Code Type</DHeader>
+                            <Spacer v={10}/>
+                            <DTextContainer centered>
+                                <DText>{codeType}</DText>
+                            </DTextContainer>
+                        </DecriptionContainer>
+                        <Spacer v={20}/>
                         <TagsContainer  >
                             <THeader justifyStart>Tags</THeader>
                             <TInput   column>
                                 <TagsComp row alignCenter>
                                     
                                     {fileTags != null  && fileTags.map((obj) => (
-                                        <ExistingTag data={obj} onDelete={(e) => removeUserFileTag(e)}/>
+                                        <ExistingCommunityTag data={obj}/>
                                     ))}
-                                    <AddTag centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo} onClick={() =>setIsAddModalOn(true)}>
-                                        <AddIcon size={32} />
-                                </AddTag>
                                 </TagsComp>
                                 <Spacer v={40}/>
             
                             </TInput>
                         </TagsContainer>
-                        <SaveButtonContainer  pointer onClick={() => saveChanges()}>
-                            <SaveButton textColor={getContrastColor(ColorInfo)} color={ColorInfo} centered> Save</SaveButton>
-                        </SaveButtonContainer>
                     </DetailsContainer>
                 </Body>
 
@@ -250,15 +156,36 @@ const FileNameInput = styled.input`
     border:none;
     min-width:55px;
     width: ${(props) => props.inputWidth}px;
-
+    
     ${({ isEditing }) =>
     isEditing &&
     `
-        background-color: #333333;
+    background-color: #333333;
     
     `
     }
 `
+
+const DText = styled.p`
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 15px;
+    font-family:"Gilroy";
+    width: 90%;
+`;
+
+const DTextContainer = styled(Container)`
+    margin-left: 20px;
+    background-color: #333333;
+    display: flex;
+    flex-wrap: wrap;
+`;
+
+const FileName = styled.p`
+    font-size:22px;
+    color:white;
+`;
 
 const EditIconContainer = styled(Container)`
     height:100%;
@@ -281,7 +208,7 @@ const CodeContainer = styled(Container)`
 `;
 
 const DetailsContainer = styled(Container)`
-    height: 99%;
+    /* height: 99%; */
     width: 30%;
 `;
 const Body = styled(Container)`
@@ -311,7 +238,7 @@ const BLOCK= styled(Container)`
 `;
 
 const DecriptionContainer= styled(Container)`
-    height: 40%;
+    /* height: 40%; */
     width: 100%;
 `;
 
@@ -337,9 +264,9 @@ const SaveButtonContainer= styled(Container)`
 `;
 
 const DHeader= styled(Container)`
-    height: 7%;
+    height: 30px;
     font-size: 22px;
-    padding-left: 20px;
+    margin-left: 20px;
 `;
 
 const DInput= styled.textarea`
@@ -357,7 +284,7 @@ const DInput= styled.textarea`
     display: flex;
     flex-wrap: wrap;
     font-size: 15px;
-    font-family:"Gilroy"
+    font-family:"Gilroy";
 `;
 
 const CTHeader= styled(Container)`

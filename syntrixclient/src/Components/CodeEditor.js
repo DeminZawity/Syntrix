@@ -124,6 +124,7 @@ function CodeEditor(props) {
     const options = {
       selectOnLineNumbers: true,
       renderIndentGuides: true,
+      readOnly: props.disabled ? false : true,
       colorDecorators: true,
       cursorBlinking: 'blink',
       autoClosingQuotes: 'always',
