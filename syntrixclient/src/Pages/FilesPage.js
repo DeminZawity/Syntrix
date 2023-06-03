@@ -11,6 +11,7 @@ import { GetFolderFiles } from "../API/Files";
 import { DeletingFile, AddingFile } from "../API/Files";
 import { Input } from "../Components/InputField";
 import { getContrastColor } from "../Utilities/Color";
+import { BackIcon } from "../UI/Icons";
 
 
 export function FilesPage() {
@@ -88,16 +89,20 @@ export function FilesPage() {
             <Spacer h={250}/>
             <DirectoryContainer>
                 <Header row>
-                <FolderCountContainer justifyStart column>
-                        <Spacer v={40}/>
-                        <FolderName>
+                    <LeftContainer column>
+                        <FolderNameContainer  row>
+                            <BackIconContainer centered pointer>
+                                <BackIcon size={30} onClick={() => navigate(`/Directory`)}/>
+                            </BackIconContainer>
+                            <Spacer h={20}/>
+                            <FolderName centered>
                             {FolderInfo.FolderName}
-                        </FolderName>
-                        <FolderCountHeader justifyStart column>
-                            <Spacer v={40}/>
+                            </FolderName>
+                        </FolderNameContainer>
+                        <FCountContainer alignEnd>
                             Files • {files.length}
-                        </FolderCountHeader>
-                </FolderCountContainer>
+                        </FCountContainer>
+                    </LeftContainer>
                     <Spacer v={75}/>
                     <AddFolderContainer alignEnd row>
                         {
@@ -156,6 +161,21 @@ export function FilesPage() {
 
 }
 
+const FolderNameContainer = styled(Container)`
+
+`;
+const FCountContainer = styled(Container)`
+    color: #8D8D8D;
+    font-size: 18px;
+    padding-top: 15px;
+`;
+
+const LeftContainer = styled(Container)`
+    width: 50%;
+`;
+const RightContainer = styled(Container)`
+    width: 50%;
+`;
 const IconContainer = styled(Container)`
 margin-bottom:3px;
 margin-right:3px;
@@ -235,4 +255,15 @@ bottom:10px;
 `;
 
 const FolderName = styled(Container)`
-font-size: 25px;`;
+font-size: 25px;
+height: 50px;
+margin-top: 29px;
+`;
+
+
+
+const BackIconContainer = styled(Container)`
+width: 3%;
+height: 50px;
+margin-top: 29px;
+`;

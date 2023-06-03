@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled, {keyframes, css } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { Screen, Container, Hover, Spacer } from "../UI/Models";
-import { AddIcon, BackIcon, XIcon,EditIcon } from "../UI/Icons"
+import { AddIcon, BackIcon, XIcon,EditIcon, LoadingIcon, LogoIcon, LogoSVG } from "../UI/Icons"
 import CodeEditor from "../Components/CodeEditor";
 import { DeleteIcon } from "../UI/Icons";
 import { Tag } from "../Components/Tag";
@@ -17,8 +17,11 @@ import { ExistingTag } from "../Components/ExistingTag";
 import { GetFolderFiles, GetFileDetail, EditingFile } from "../API/Files";
 import Dropdown from "../Components/Dropdown";
 import { getContrastColor } from "../Utilities/Color";
-
-
+import { SyntrixAI } from "../Utilities/SyntrixAI";
+import CircularProgress from '@mui/material/CircularProgress';
+import axios from "axios";
+const apiKey = "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"
+const endPointURL = "https://api.openai.com/v1/chat/completions"
 
 export function FileDetailsPage() {
     const GetCurrentFile = useSelector((state) => state.CurrentWorkingFile)
@@ -34,6 +37,7 @@ export function FileDetailsPage() {
     const [codeType,setCodeType] = useState(null)
     const [isPublic,setIsPublic] = useState(true)
     const [isEditingName,setIsEditingName] = useState(false)
+    const [isLoadingAI, setIsLoadingAI] = useState(false)
     const navigate = useNavigate();
 
 
@@ -95,6 +99,38 @@ export function FileDetailsPage() {
             setTags([])
             GetTags();
         }
+    }
+
+     const SyntrixAI = async () => {
+        if(code.length < 1){
+            return
+        }
+
+        setIsLoadingAI(true)
+        const requestBody = {
+            "model" : "gpt-3.5-turbo",
+            "messages" : [{'role' : 'user', "content" : `Can you please summarize what this code block does : ${code}`}],
+        }
+        const requestHeaders = {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${apiKey}`
+        }
+        
+        
+        
+        
+        await axios.post(endPointURL,requestBody, {headers : requestHeaders})
+        .then(response => {
+            setDescription(response.data.choices[0].message.content)
+
+        })
+        .catch(err => {
+            console.log(err)
+            return false
+        })
+        .finally(() => {
+            setIsLoadingAI(false)
+        })
     }
 
 
@@ -185,14 +221,32 @@ export function FileDetailsPage() {
                         </CCBlock>
                     </CodeContainer>
                     <DetailsContainer column  >
-                        <DecriptionContainer column  >
-                            <DHeader justifyStart>Description</DHeader>
-                            <DInput onChange={(e) => setDescription(e.target.value)} value={description}/>
+                        <DecriptionContainer row>
+                            <ContentContainer column>
+                                <DHeader justifyStart>Description</DHeader>
+                                <DInput onChange={(e) => setDescription(e.target.value)} value={description}/>
+                                <Spacer v={11}/>
+                            <SaveButtonContainer  pointer onClick={() => SyntrixAI()}>
+                                <SaveButton textColor={getContrastColor(ColorInfo)} color={ColorInfo} centered>
+                                    {
+                                        isLoadingAI === true && (
+                                            <CircularProgress size={20} style={{'color': getContrastColor(ColorInfo)}}/>
+                                        )
+                                    }
+                                    {
+                                        isLoadingAI === false && (
+                                            "Syntrix AI Describe"
+                                        )
+                                    }
+                                    
+                                </SaveButton>
+                            </SaveButtonContainer>
+                            </ContentContainer>
                         </DecriptionContainer>
+                        <Spacer v={18}/>
                         <CodeTypeContainer>
                             <CTHeader justifyStart>Code Type
                             </CTHeader>
-                            {/* <CTInput onChange={(e) => setCodeType(e.target.value)} value={codeType} /> */}
                             <Spacer v={12} />
                             <Dropdown onChange={(e) => setCodeType(e)} type={codeType} />
                         </CodeTypeContainer>
@@ -238,6 +292,18 @@ export function FileDetailsPage() {
     )
 }
 
+
+
+const APIIconContainer = styled(Container)`
+    height: 28px;
+    margin-top: 32px;
+`;
+
+const ContentContainer = styled(Container)`
+    /* height: 100%; */
+    width: 100%;
+    position: relative;
+`;
 
 const FileNameInput = styled.input`
     height:90%;
@@ -311,7 +377,7 @@ const BLOCK= styled(Container)`
 `;
 
 const DecriptionContainer= styled(Container)`
-    height: 40%;
+    height: 45%;
     width: 100%;
 `;
 
