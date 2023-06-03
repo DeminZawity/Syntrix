@@ -260,7 +260,7 @@ namespace Syntrix.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Files WHERE Id = @id";
+                    cmd.CommandText = "DELETE FROM FileTags WHERE FileId = @id; DELETE FROM Files WHERE Id = @id";
                     DbUtils.AddParameter(cmd, "@id", id);
                     cmd.ExecuteNonQuery();
                 }

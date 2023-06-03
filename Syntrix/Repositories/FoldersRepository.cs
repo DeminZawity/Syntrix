@@ -65,6 +65,7 @@ namespace Syntrix.Repositories
             }
         }
 
+        
 
         /*------------------Get Folders by UserId that are Bookmarked----------------------*/
 
@@ -123,7 +124,6 @@ namespace Syntrix.Repositories
 
 
 
-
         /*------------------Add Folder----------------------*/
 
         public void AddFolder(FolderAdd folder)
@@ -178,7 +178,10 @@ namespace Syntrix.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Folders WHERE Id = @id";
+                    cmd.CommandText = "DELETE FROM Bookmarks WHERE FolderId = @id; " +
+                                        "DELETE FROM FileTags WHERE FileId IN (SELECT Id FROM Files WHERE FolderId = @id); " +
+                                        "DELETE FROM Files WHERE FolderId = @id; " +
+                                        "DELETE FROM Folders WHERE Id = @id;";
                     DbUtils.AddParameter(cmd, "@id", id);
                     cmd.ExecuteNonQuery();
                 }
