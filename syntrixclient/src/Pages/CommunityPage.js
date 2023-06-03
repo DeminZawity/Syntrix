@@ -38,7 +38,7 @@ export function CommunityPage() {
     const GetPublicFiles = async () => {
         let PublicFilesData = await GetAllPublicFiles();
         setPublicFiles(PublicFilesData)
-        console.log(PublicFilesData)
+        // console.log(PublicFilesData)
     }
 
     const GetSearchedFiles = async (obj) => {

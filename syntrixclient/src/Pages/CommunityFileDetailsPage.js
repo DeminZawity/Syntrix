@@ -38,9 +38,9 @@ export function CommunityFileDetailsPage() {
 
     const GetFileData = async () => {
         let FileData = await GetFileDetail(GetCurrentFile.FileId)
-        console.log(FileData)
+        // console.log(FileData)
         if(FileData != false){
-            console.log(FileData)
+            // console.log(FileData)
             setFileName(FileData.name);
             setCode(FileData.content)
             setDescription(FileData.description)

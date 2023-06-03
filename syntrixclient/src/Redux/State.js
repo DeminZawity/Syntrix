@@ -92,6 +92,13 @@ const Bridge = (state = initialState, action) => {
                         FileDescription: null,
                         FileContent: null,
                         FileIsPublic: null,
+                    },
+                    CurrentWorkingResource:{
+                        ResourceId: null,
+                        ResourceUserId: null,
+                        ResourceName: null,
+                        ResourceDescription: null,
+                        ResourceLink: null,
                     }
                     };
         default:

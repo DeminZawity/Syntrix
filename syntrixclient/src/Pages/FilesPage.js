@@ -28,7 +28,7 @@ export function FilesPage() {
     const GetFiles = async () => {
         let FilesData = await GetFolderFiles(FolderInfo.FolderId);
         setFiles(FilesData)
-        console.log(FilesData)
+        // console.log(FilesData)
     }
 
     const UpdateFileInfo = (obj) => {
@@ -75,7 +75,7 @@ export function FilesPage() {
 
     useEffect(() => {
         GetFiles()
-        console.log(FolderInfo)
+        // console.log(FolderInfo)
     },[])
 
 

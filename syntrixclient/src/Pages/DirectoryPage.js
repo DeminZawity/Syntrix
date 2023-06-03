@@ -41,7 +41,7 @@ export function DirectoryPage() {
     const OpenFolder = (obj) => {
         UpdateFolderInfo(obj)
         navigate("/FilesPage")
-        console.log(obj)
+        // console.log(obj)
 
     } 
 
@@ -99,7 +99,7 @@ export function DirectoryPage() {
     const GetFolders = async () => {
         let FolderData = await GetUserFolders(UserInfo.id);
         setFolders(FolderData);
-        console.log(FolderData)
+        // console.log(FolderData)
     }
 
 

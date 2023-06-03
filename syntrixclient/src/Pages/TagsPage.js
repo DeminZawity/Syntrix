@@ -62,7 +62,7 @@ export function TagsPage() {
     const GetTags = async () => {
         let TagsData = await GetUserTags(UserInfo.id)
         setTags(TagsData)
-        console.log(TagsData)
+        // console.log(TagsData)
     }
 
 
