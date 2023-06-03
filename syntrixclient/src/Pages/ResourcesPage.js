@@ -308,6 +308,7 @@ height: 4vh;
 width: 10vw;
 color: #8D8D8D;
 font-size: 18px;
+margin-top: 23px;
 `;
 
 const AddFolderButton = styled(Container)`
