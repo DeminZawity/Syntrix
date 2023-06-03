@@ -34,9 +34,9 @@ export function ResouresPage() {
 
     const GetResourceData = async () => {
         let ResourceData = await GetResourceDetail(selectedResource.ResourceId)
-        console.log(ResourceData)
+        // console.log(ResourceData)
         if(ResourceData != false){
-            console.log(ResourceData)
+            // console.log(ResourceData)
             setUpdatedResourceName(ResourceData.name);
             setUpdatedResourceDescription(ResourceData.description)
             setUpdatedResourceLink(ResourceData.link)
@@ -47,7 +47,7 @@ export function ResouresPage() {
 
     const OpenResource = (obj) => {
         setSelectedResource(obj)
-        console.log(obj)
+        // console.log(obj)
         setUpdatedResourceName(obj.name);
         setUpdatedResourceDescription(obj.description)
         setUpdatedResourceLink(obj.link)
@@ -59,7 +59,7 @@ export function ResouresPage() {
     const GetUserResources = async () => {
         let ResourcesData = await GetResources(UserInfo.id);
         setResources(ResourcesData)
-        console.log(ResourcesData)
+        // console.log(ResourcesData)
     }
 
     const AddResource = async () => {

@@ -13,9 +13,9 @@ export function LandingPage() {
 
     const UserInfo = useSelector((state) => state.User)
 
-    useEffect(() => {
-        console.log(UserInfo)
-    },[])
+    // useEffect(() => {
+    //     console.log(UserInfo)
+    // },[])
 
     return (
         <BakcgroundScreen>

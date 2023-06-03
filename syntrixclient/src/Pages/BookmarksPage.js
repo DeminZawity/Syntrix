@@ -21,7 +21,7 @@ export function BookmarksPage() {
     const GetBookmarks = async () => {
         let BookmarkData = await GetUserBookmarks(UserInfo.id);
         setBookamrks(BookmarkData);
-        console.log(BookmarkData)
+        // console.log(BookmarkData)
     }
 
     const DeleteBookmark = async (Id) => {
