@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { useDispatch } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { getContrastColor } from "../Utilities/Color";
@@ -14,6 +14,7 @@ import  Fade  from "@mui/material/Fade";
 import { convertToEmbeddedLink } from "../Utilities/YoutubeLink";
 
 export function ResouresPage() {
+    const videoRef = useRef(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [resources, setResources] = useState([]);
@@ -42,6 +43,7 @@ export function ResouresPage() {
             setUpdatedResourceLink(ResourceData.link)
         }
     }
+
 
 
 
@@ -139,7 +141,9 @@ export function ResouresPage() {
                                 <>
                                 
                                 <MHeader>
-                                    <XIcon size={40} pointer onClick={() => ClosingModal()}/>
+                                    <IconWrapper justifyEnd pointer>
+                                        <XIcon size={40} onClick={() => ClosingModal()}/>
+                                    </IconWrapper>
                                     <MLabel alignEnd>Title</MLabel>
                                     <MLinkInput value={updatedResourceName} onChange={(e) => setUpdatedResourceName(e.target.value)}/>
                                 </MHeader>
@@ -164,7 +168,9 @@ export function ResouresPage() {
                                 <>
                                 
                                 <MHeader >
-                                    <XIcon size={40} pointer onClick={() => setIsModalOn(false)}/>
+                                    <IconWrapper justifyEnd pointer>
+                                        <XIcon size={40} onClick={() => setIsModalOn(false)}/>
+                                    </IconWrapper>
                                     <Spacer v={15} />
                                     <MLabel alignEnd>Title</MLabel>
                                     <MDescription>{updatedResourceName}</MDescription>
@@ -184,7 +190,7 @@ export function ResouresPage() {
                                     {
                                         (updatedResourceLink.includes("youtube") && selectedResource != null) && (
                                             <Container>
-                                                <iframe width="560" title="ResourceThumbnail" height="315" src={convertToEmbeddedLink(updatedResourceLink)} frameborder="0" allowfullscreen class="youtubeiframe"></iframe>
+                                                <iframe width="560" title="ResourceThumbnail" height="315" src={convertToEmbeddedLink(updatedResourceLink)} frameborder="0" allowfullscreen class="youtubeiframe" ref={videoRef}></iframe>
                                             </Container>
                                         )
                                     }
@@ -263,6 +269,9 @@ export function ResouresPage() {
 
 }
 
+const IconWrapper = styled(Container)`
+    width: 100%;
+`;
 
 const IconContainer = styled(Container)`
 margin-bottom:3px;
