@@ -14,7 +14,7 @@ function handleEditorWillMount(monaco) {
         { token: 'comment.js', foreground: '#53B348', fontStyle: 'bold' },
         { token: 'keyword', foreground: '#9720FF', fontStyle: 'bold' },
         { token : 'delimiter', foreground : "#9720FF"},
-        { token : 'delimiter.parenthesis', foreground : "#9720FF"},
+        { token : 'delimiter.parenthesis', foreground : "#FF0000"},
         { token : 'delimiter.bracket', foreground : "#9720FF"}
         // 
         // comment

@@ -20,7 +20,7 @@ import { getContrastColor } from "../Utilities/Color";
 import { SyntrixAI } from "../Utilities/SyntrixAI";
 import CircularProgress from '@mui/material/CircularProgress';
 import axios from "axios";
-const apiKey = "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"
+const apiKey = "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"
 const endPointURL = "https://api.openai.com/v1/chat/completions"
 
 export function FileDetailsPage() {
