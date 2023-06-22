@@ -248,7 +248,7 @@ const AddTagButton = styled(Container)`
 height: 3vh;
 width: 8vw;
 font-size: 16px;
-border-radius: 5px;
+border-radius: 3px;
 transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 position:absolute;
 right:10px;
@@ -256,6 +256,27 @@ bottom:10px;
 
 &:hover {
     transform: scale(1.1);
+    font-weight: bold;
+
+    ${({ color }) =>
+    color &&
+    `
+    color : ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+
+    background-color: ${textColor};
+    border: 1px solid ${textColor};
+    `
+    }
+
+
+
   }
 
   ${({ color }) =>

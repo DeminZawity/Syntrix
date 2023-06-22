@@ -126,7 +126,33 @@ const SIcon = styled(Container)`
     height: 50%;
     width: 50%;
     border-radius: 3px;
+    transition: background-color 0.5s ease, color 0.5s ease, transform 0.5s ease;
 
+&:hover {
+    transform: scale(1.1);
+    font-weight: bold;
+
+    ${({ color }) =>
+    color &&
+    `
+    color : ${color};
+    
+    `
+    }
+
+ ${({ textColor }) =>
+    textColor &&
+    `
+
+    background-color: ${textColor};
+    border: 1px solid ${textColor};
+    `
+    }
+
+
+
+  }
+  
     ${({ color }) =>
     color &&
     `
