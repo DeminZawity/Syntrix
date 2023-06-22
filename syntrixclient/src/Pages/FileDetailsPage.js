@@ -161,7 +161,9 @@ export function FileDetailsPage() {
             <Fade in={isAddModalOn} style={{transitionDelay:"140ms"}}>
                 <ModalContainer>
                     <ATContainer column>
-                        <XIcon size={40} pointer onClick={() => setIsAddModalOn(false)}/>
+                        <IconWrapper pointer>
+                            <XIcon size={40} onClick={() => setIsAddModalOn(false)}/>
+                        </IconWrapper>
                         <ATHeader centered>Add Tag</ATHeader>
                         <ATSubHeader>Select all that apply</ATSubHeader>
                         <ATBody>
@@ -177,7 +179,7 @@ export function FileDetailsPage() {
                             </ATDetail>
                         </ATBody>
                         <ATFooter centered onClick={() => saveAddTags()}>
-                            <SaveTagsButton centered textColor={getContrastColor(ColorInfo)} color={ColorInfo}>Save Tags</SaveTagsButton>
+                            <SaveTagsButton centered pointer textColor={getContrastColor(ColorInfo)} color={ColorInfo}>Save Tags</SaveTagsButton>
                         </ATFooter>
                     </ATContainer>
                 </ModalContainer>
@@ -292,7 +294,7 @@ export function FileDetailsPage() {
     )
 }
 
-
+const IconWrapper = styled(Container)``;
 
 const APIIconContainer = styled(Container)`
     height: 28px;

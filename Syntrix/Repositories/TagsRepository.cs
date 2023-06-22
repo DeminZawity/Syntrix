@@ -105,7 +105,7 @@ namespace Syntrix.Repositories
 
 
 
-        /*------------------Delete Tag----------------------*/
+        /*------------------Delete Tag and related FileTags----------------------*/
 
         public void DeleteTag(int id)
         {
@@ -114,8 +114,13 @@ namespace Syntrix.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Tags WHERE Id = @id";
+                    // First, delete the associated records from the FileTags table
+                    cmd.CommandText = "DELETE FROM FileTags WHERE TagId = @id";
                     DbUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
+
+                    // Then, delete the record from the Tags table
+                    cmd.CommandText = "DELETE FROM Tags WHERE Id = @id";
                     cmd.ExecuteNonQuery();
                 }
             }

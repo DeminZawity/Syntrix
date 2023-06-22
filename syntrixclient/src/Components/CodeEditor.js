@@ -6,16 +6,16 @@ import { Container, Spacer, TextField } from "../UI/Models";
 
 function handleEditorWillMount(monaco) {
     monaco.editor.defineTheme('DeminTheme', {
-      base: 'vs',
+      base: 'vs-dark',
       inherit: true,
       rules: [
         { token: '', foreground: '#ffffff' },
         { token: 'comment', foreground: '#ffa500', fontStyle: 'italic underline' },
-        { token: 'comment.js', foreground: '#53B348', fontStyle: 'bold' },
-        { token: 'keyword', foreground: '#9720FF', fontStyle: 'bold' },
-        { token : 'delimiter', foreground : "#9720FF"},
-        { token : 'delimiter.parenthesis', foreground : "#FF0000"},
-        { token : 'delimiter.bracket', foreground : "#9720FF"}
+        { token: 'comment.js', foreground: '#59c4c9', fontStyle: 'bold' },
+        { token: 'keyword', foreground: '#d6a3cc', fontStyle: 'bold' },
+        { token : 'delimiter', foreground : "#d6a3cc"},
+        { token : 'delimiter.parenthesis', foreground : "#715cb5"},
+        { token : 'delimiter.bracket', foreground : "#715cb5"}
         // 
         // comment
         // string
